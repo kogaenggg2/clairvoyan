@@ -5,13 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <meta name="title" content="ClairVoyan DAA System - Vision-Based Detect-and-Avoid for UAVs">
-  <meta name="description" content="An intelligent vision-based Detect-and-Avoid framework for UAVs using cascaded HRNet detection, ego-motion compensation, and Kalman-based tracking.">
-  <meta name="keywords" content="DAA, detect and avoid, UAV, drone, HRNet, YOLO26, object detection, tracking, collision avoidance, RTCA DO-387, computer vision">
+  <meta name="description" content="A lightweight vision-based Detect-and-Avoid system for UAVs.">
+  <meta name="keywords" content="DAA, detect and avoid, UAV, drone, HRNet, YOLO26, object detection, tracking, RTCA DO-387, computer vision">
   <meta name="author" content="Yu-An Chen, Gyungmin Ko, Ian Pan, Koume Matsutori, Nick Leung, Shreyas Krishnan">
 
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="GuideAir Labs &middot; UW ECE">
-  <meta property="og:title" content="ClairVoyan DAA System: Intelligent Vision-Based Detect-and-Avoid Framework for UAVs">
+  <meta property="og:title" content="ClairVoyan DAA System: Vision-Based Detect-and-Avoid for UAVs">
 
   <title>ClairVoyan DAA | Vision-Based Detect-and-Avoid for UAVs</title>
 
@@ -21,25 +21,23 @@
 
   <style>
     :root {
-      --navy: #0a1628;
-      --navy-mid: #121f36;
-      --navy-light: #1a2d4a;
-      --sky-blue: #38bdf8;
-      --sky-dim: #1e6ea1;
-      --amber: #f59e0b;
-      --amber-light: #fbbf24;
-      --green-ok: #22c55e;
-      --red-warn: #ef4444;
-      --purple-uw: #4b2e83;
-      --gold-uw: #b7a57a;
-      --surface: #0e1a2e;
-      --surface-card: #132035;
-      --surface-hover: #1a2d4a;
-      --text-main: #e2e8f0;
-      --text-dim: #94a3b8;
-      --text-muted: #64748b;
-      --border: rgba(56, 189, 248, 0.12);
-      --glow: rgba(56, 189, 248, 0.08);
+      --black: #050605;
+      --charcoal: #0b0d0b;
+      --charcoal-2: #111410;
+      --charcoal-3: #181d17;
+      --panel: #0f120e;
+      --panel-soft: #151a14;
+      --line: rgba(236, 255, 210, 0.13);
+      --line-strong: rgba(199, 255, 0, 0.35);
+      --text: #f4f7ef;
+      --text-soft: #b8beb3;
+      --text-muted: #7f887a;
+      --accent: #c7ff00;
+      --accent-soft: rgba(199, 255, 0, 0.12);
+      --accent-dim: #8fb800;
+      --danger: #ff5f45;
+      --ok: #8cff66;
+      --uw-gold: #b7a57a;
     }
 
     * {
@@ -48,232 +46,312 @@
       padding: 0;
     }
 
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
       font-family: 'Outfit', sans-serif;
-      background: var(--navy);
-      color: var(--text-main);
+      background: var(--black);
+      color: var(--text);
       -webkit-font-smoothing: antialiased;
     }
 
+    a {
+      color: inherit;
+    }
+
     .container-main {
-      max-width: 1020px;
+      max-width: 1080px;
       margin: 0 auto;
       padding: 0 1.5rem;
     }
 
     .hero-section {
       position: relative;
-      padding: 5rem 1.5rem 3.5rem;
+      min-height: 92vh;
+      padding: 5rem 1.5rem 4rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       text-align: center;
       overflow: hidden;
       background:
-        radial-gradient(ellipse 80% 60% at 50% 20%, rgba(56, 189, 248, 0.08) 0%, transparent 70%),
-        linear-gradient(180deg, var(--navy) 0%, var(--surface) 100%);
+        radial-gradient(circle at 72% 25%, rgba(199, 255, 0, 0.10), transparent 28%),
+        radial-gradient(circle at 15% 82%, rgba(255, 255, 255, 0.055), transparent 30%),
+        linear-gradient(180deg, #050605 0%, #0b0d0b 55%, #050605 100%);
     }
 
     .hero-section::before {
-      content: '';
+      content: "";
       position: absolute;
       inset: 0;
       background-image:
-        linear-gradient(rgba(56,189,248,0.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(56,189,248,0.04) 1px, transparent 1px);
-      background-size: 60px 60px;
-      mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, black, transparent);
+        linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
+      background-size: 72px 72px;
+      mask-image: radial-gradient(circle at 50% 38%, black 0%, transparent 72%);
     }
 
     .hero-section::after {
-      content: '';
+      content: "";
       position: absolute;
-      bottom: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 2px;
-      height: 60px;
-      background: linear-gradient(to bottom, var(--sky-blue), transparent);
-      opacity: 0.3;
+      inset: auto 0 0 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+      opacity: 0.6;
     }
 
-    .hero-section > * {
+    .hero-inner {
       position: relative;
       z-index: 1;
+      max-width: 1120px;
+      margin: 0 auto;
     }
 
     .hero-badge {
       display: inline-flex;
       align-items: center;
-      gap: 0.5rem;
-      background: rgba(56, 189, 248, 0.08);
-      border: 1px solid rgba(56, 189, 248, 0.2);
-      border-radius: 100px;
-      padding: 0.4rem 1.1rem;
-      font-size: 0.75rem;
-      font-weight: 600;
-      letter-spacing: 0.06em;
+      gap: 0.55rem;
+      border: 1px solid var(--line-strong);
+      background: rgba(199, 255, 0, 0.06);
+      color: var(--accent);
+      border-radius: 999px;
+      padding: 0.45rem 1rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
-      color: var(--sky-blue);
-      margin-bottom: 1.8rem;
+      margin-bottom: 1.6rem;
     }
 
     .hero-title {
       font-family: 'Space Grotesk', sans-serif;
-      font-size: 2.8rem;
-      font-weight: 700;
-      line-height: 1.12;
-      letter-spacing: -0.03em;
-      max-width: 820px;
-      margin: 0 auto 0.6rem;
-      color: #ffffff;
+      font-size: clamp(2.4rem, 7vw, 5.7rem);
+      line-height: 0.94;
+      font-weight: 800;
+      letter-spacing: -0.07em;
+      color: var(--text);
+      text-transform: uppercase;
+      margin-bottom: 1.2rem;
     }
 
     .hero-title .accent {
-      color: var(--sky-blue);
+      color: var(--accent);
     }
 
     .hero-subtitle {
-      font-size: 1.15rem;
-      font-weight: 400;
-      color: var(--text-dim);
-      max-width: 640px;
-      margin: 0 auto 2rem;
-      line-height: 1.6;
-    }
-
-    .hero-authors {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 0.3rem 1.2rem;
-      margin-bottom: 0.6rem;
-    }
-
-    .hero-authors span {
-      font-size: 1rem;
-      font-weight: 500;
-      color: var(--text-main);
-    }
-
-    .hero-affiliation {
-      font-size: 0.9rem;
-      color: var(--text-muted);
-      margin-bottom: 0.25rem;
-    }
-
-    .hero-affiliation .uw-text {
-      color: var(--gold-uw);
-      font-weight: 600;
-    }
-
-    .hero-meta {
-      font-size: 0.8rem;
-      color: var(--text-muted);
-      margin-bottom: 2rem;
+      max-width: 720px;
+      margin: 0 auto 2.2rem;
+      color: var(--text-soft);
+      font-size: 1.12rem;
+      line-height: 1.55;
     }
 
     .hero-links {
       display: flex;
-      flex-wrap: wrap;
       justify-content: center;
-      gap: 0.6rem;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-bottom: 2.6rem;
     }
 
     .h-link {
       display: inline-flex;
       align-items: center;
-      gap: 0.5rem;
-      padding: 0.55rem 1.15rem;
-      border-radius: 8px;
-      font-size: 0.88rem;
+      gap: 0.55rem;
+      padding: 0.75rem 1.1rem;
+      border-radius: 2px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem;
       font-weight: 600;
       text-decoration: none;
-      transition: all 0.2s;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      transition: transform 0.2s, background 0.2s, border-color 0.2s;
     }
 
     .h-link.primary {
-      background: var(--sky-blue);
-      color: var(--navy);
+      background: var(--accent);
+      color: #050605;
+      border: 1px solid var(--accent);
     }
 
     .h-link.primary:hover {
-      background: #60ccfc;
-      transform: translateY(-1px);
+      transform: translateY(-2px);
+      background: #d7ff3a;
     }
 
     .h-link.ghost {
-      background: rgba(255,255,255,0.05);
-      color: var(--text-main);
-      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.035);
+      color: var(--text);
+      border: 1px solid var(--line);
     }
 
     .h-link.ghost:hover {
-      background: rgba(255,255,255,0.1);
-      border-color: rgba(255,255,255,0.25);
+      transform: translateY(-2px);
+      border-color: var(--line-strong);
+      background: var(--accent-soft);
+    }
+
+    .hero-authors {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.8rem;
+      max-width: 920px;
+      margin: 0 auto 1.4rem;
+    }
+
+    .author-chip {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.55rem;
+      background: rgba(255,255,255,0.035);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      text-align: left;
+      transition: transform 0.2s, border-color 0.2s, background 0.2s;
+    }
+
+    .author-chip:hover {
+      transform: translateY(-2px);
+      border-color: var(--line-strong);
+      background: rgba(199,255,0,0.055);
+    }
+
+    .author-chip img {
+      width: 46px;
+      height: 46px;
+      border-radius: 2px;
+      object-fit: cover;
+      object-position: center;
+      border: 1px solid rgba(255,255,255,0.18);
+      filter: grayscale(12%) contrast(1.04);
+    }
+
+    .author-chip span {
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.15;
+    }
+
+    .hero-affiliation {
+      color: var(--text-muted);
+      font-size: 0.86rem;
+    }
+
+    .hero-affiliation .uw-text {
+      color: var(--uw-gold);
+      font-weight: 700;
+    }
+
+    .hero-meta {
+      margin-top: 0.3rem;
+      color: var(--text-muted);
+      font-size: 0.8rem;
     }
 
     .sec {
-      padding: 3.5rem 0;
+      padding: 4rem 0;
+      background: var(--black);
+      border-top: 1px solid rgba(255,255,255,0.035);
     }
 
     .sec.alt {
-      background: var(--surface);
+      background: var(--charcoal);
+    }
+
+    .sec-kicker {
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--accent);
+      font-size: 0.72rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      margin-bottom: 0.6rem;
     }
 
     .sec-title {
       font-family: 'Space Grotesk', sans-serif;
-      font-size: 1.65rem;
-      font-weight: 700;
-      color: #ffffff;
-      margin-bottom: 0.4rem;
-    }
-
-    .sec-rule {
-      width: 45px;
-      height: 3px;
-      background: var(--sky-blue);
-      border: none;
-      border-radius: 2px;
-      margin-bottom: 1.5rem;
+      font-size: clamp(1.65rem, 3.5vw, 2.7rem);
+      line-height: 1.05;
+      font-weight: 800;
+      letter-spacing: -0.045em;
+      color: var(--text);
+      text-transform: uppercase;
+      margin-bottom: 0.9rem;
     }
 
     .sec-prose {
+      max-width: 760px;
+      color: var(--text-soft);
       font-size: 1rem;
-      line-height: 1.8;
-      color: var(--text-dim);
-      max-width: 780px;
+      line-height: 1.65;
+      margin-bottom: 1.6rem;
+    }
+
+    .quick-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--line);
+      border: 1px solid var(--line);
+      margin-top: 1.5rem;
+    }
+
+    .quick-card {
+      background: var(--panel);
+      padding: 1.4rem;
+      min-height: 145px;
+    }
+
+    .quick-card h4 {
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--accent);
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 0.7rem;
+    }
+
+    .quick-card p {
+      color: var(--text-soft);
+      font-size: 0.95rem;
+      line-height: 1.55;
     }
 
     .motivation-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 1.5rem;
-      margin-top: 1.5rem;
+      gap: 1px;
+      background: var(--line);
+      border: 1px solid var(--line);
+      margin-top: 1.7rem;
     }
 
     .motive-card {
-      background: var(--surface-card);
-      border: 1px solid var(--border);
-      border-radius: 14px;
+      background: var(--panel);
       padding: 1.6rem;
     }
 
     .motive-card h4 {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 0.85rem;
-      font-weight: 700;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem;
+      letter-spacing: 0.1em;
       text-transform: uppercase;
-      letter-spacing: 0.05em;
       margin-bottom: 1rem;
       display: flex;
-      align-items: center;
       gap: 0.5rem;
+      align-items: center;
     }
 
     .motive-card.problem h4 {
-      color: var(--red-warn);
+      color: var(--danger);
     }
 
     .motive-card.solution h4 {
-      color: var(--green-ok);
+      color: var(--accent);
     }
 
     .motive-card ul {
@@ -281,265 +359,181 @@
     }
 
     .motive-card li {
-      font-size: 0.88rem;
-      line-height: 1.65;
-      color: var(--text-dim);
-      padding-left: 1.3rem;
+      color: var(--text-soft);
+      font-size: 0.9rem;
+      line-height: 1.5;
+      padding-left: 1rem;
       position: relative;
-      margin-bottom: 0.35rem;
+      margin-bottom: 0.45rem;
     }
 
-    .motive-card.problem li::before {
-      content: '✕';
+    .motive-card li::before {
+      content: "—";
       position: absolute;
       left: 0;
-      color: var(--red-warn);
-      font-size: 0.7rem;
-      top: 3px;
-    }
-
-    .motive-card.solution li::before {
-      content: '✓';
-      position: absolute;
-      left: 0;
-      color: var(--green-ok);
-      font-weight: 700;
-      font-size: 0.75rem;
-      top: 2px;
+      color: var(--text-muted);
     }
 
     .pipeline-wrap {
-      background: var(--surface-card);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 2rem;
-      margin-top: 1.5rem;
+      margin-top: 1.7rem;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      padding: 1.2rem;
     }
 
     .pipe-stages {
       display: grid;
       grid-template-columns: repeat(5, 1fr);
-      gap: 0.5rem;
-      margin-bottom: 1.5rem;
+      gap: 1px;
+      background: var(--line);
+      border: 1px solid var(--line);
+      margin-bottom: 1.2rem;
     }
 
     .pipe-stage {
-      background: var(--navy-mid);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 1.2rem 0.7rem;
-      text-align: center;
-      position: relative;
-      transition: transform 0.2s, border-color 0.3s;
+      background: var(--charcoal-2);
+      padding: 1.2rem 0.9rem;
+      min-height: 130px;
+      transition: background 0.2s, transform 0.2s;
     }
 
     .pipe-stage:hover {
-      transform: translateY(-3px);
-      border-color: rgba(56,189,248,0.3);
+      transform: translateY(-2px);
+      background: var(--panel-soft);
     }
 
     .pipe-num {
+      display: inline-flex;
       width: 26px;
       height: 26px;
-      border-radius: 50%;
-      background: var(--sky-dim);
-      color: #ffffff;
-      font-size: 0.72rem;
-      font-weight: 700;
-      display: inline-flex;
       align-items: center;
       justify-content: center;
-      margin-bottom: 0.6rem;
+      border: 1px solid var(--line-strong);
+      color: var(--accent);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      margin-bottom: 0.75rem;
     }
 
     .pipe-stage h4 {
-      font-size: 0.78rem;
-      font-weight: 700;
-      color: #ffffff;
-      margin-bottom: 0.3rem;
+      color: var(--text);
+      font-size: 0.88rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+      margin-bottom: 0.45rem;
     }
 
     .pipe-stage p {
-      font-size: 0.68rem;
       color: var(--text-muted);
-      line-height: 1.4;
-    }
-
-    .pipe-stage.active {
-      border-color: var(--sky-blue);
-      background: linear-gradient(135deg, rgba(56,189,248,0.06), rgba(56,189,248,0.02));
-      box-shadow: 0 0 20px rgba(56,189,248,0.06);
+      font-size: 0.78rem;
+      line-height: 1.45;
     }
 
     .pipe-stage.active .pipe-num {
-      background: var(--sky-blue);
-      color: var(--navy);
+      background: var(--accent);
+      color: #050605;
     }
 
     .pipeline-figure {
-      margin-top: 1.8rem;
-      background: #ffffff;
-      border-radius: 12px;
-      padding: 1rem;
-      border: 1px solid var(--border);
-      overflow: hidden;
+      background: #f4f7ef;
+      padding: 0.75rem;
+      border: 1px solid var(--line);
     }
 
     .pipeline-figure img {
+      display: block;
       width: 100%;
       height: auto;
-      display: block;
-      border-radius: 8px;
     }
 
     .pipeline-figure figcaption {
-      margin-top: 0.8rem;
-      text-align: center;
+      color: #353a32;
       font-size: 0.82rem;
-      color: #475569;
+      line-height: 1.45;
+      text-align: center;
+      margin-top: 0.65rem;
       font-style: italic;
-      line-height: 1.5;
     }
 
     .module-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1.2rem;
-      margin-top: 1.5rem;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: var(--line);
+      border: 1px solid var(--line);
+      margin-top: 1.7rem;
     }
 
     .module-card {
-      background: var(--surface-card);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 1.5rem;
-      transition: border-color 0.3s;
+      background: var(--panel);
+      padding: 1.35rem;
+      min-height: 210px;
     }
 
-    .module-card:hover {
-      border-color: rgba(56,189,248,0.25);
-    }
-
-    .module-card .mod-tag {
+    .mod-tag {
       display: inline-block;
+      font-family: 'JetBrains Mono', monospace;
       font-size: 0.65rem;
-      font-weight: 700;
+      letter-spacing: 0.1em;
       text-transform: uppercase;
-      letter-spacing: 0.08em;
-      padding: 0.2rem 0.6rem;
-      border-radius: 4px;
-      margin-bottom: 0.8rem;
-    }
-
-    .mod-tag.blue {
-      background: rgba(56,189,248,0.12);
-      color: var(--sky-blue);
-    }
-
-    .mod-tag.green {
-      background: rgba(34,197,94,0.12);
-      color: var(--green-ok);
-    }
-
-    .mod-tag.amber {
-      background: rgba(245,158,11,0.12);
-      color: var(--amber);
-    }
-
-    .mod-tag.red {
-      background: rgba(239,68,68,0.12);
-      color: var(--red-warn);
+      color: var(--accent);
+      margin-bottom: 0.9rem;
     }
 
     .module-card h4 {
       font-family: 'Space Grotesk', sans-serif;
+      color: var(--text);
       font-size: 1.05rem;
-      font-weight: 700;
-      color: #ffffff;
-      margin-bottom: 0.6rem;
+      line-height: 1.15;
+      font-weight: 800;
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
     }
 
-    .module-card ul {
-      list-style: none;
-    }
-
-    .module-card li {
-      font-size: 0.85rem;
-      color: var(--text-dim);
-      line-height: 1.6;
-      padding-left: 1rem;
-      position: relative;
-      margin-bottom: 0.2rem;
-    }
-
-    .module-card li::before {
-      content: '›';
-      position: absolute;
-      left: 0;
-      color: var(--sky-blue);
-      font-weight: 700;
-    }
-
-    .rtca-header {
-      background: linear-gradient(90deg, rgba(245,158,11,0.08), transparent);
-      border: 1px solid rgba(245,158,11,0.15);
-      border-radius: 10px;
-      padding: 0.8rem 1.2rem;
-      margin-top: 1.5rem;
-      margin-bottom: 0.5rem;
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-    }
-
-    .rtca-header h3 {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 1rem;
-      font-weight: 700;
-      color: var(--amber);
-    }
-
-    .rtca-header .rtca-sub {
-      font-size: 0.78rem;
-      color: var(--text-muted);
+    .module-card p {
+      color: var(--text-soft);
+      font-size: 0.9rem;
+      line-height: 1.55;
     }
 
     .rtca-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 1rem;
-      margin-top: 1.5rem;
+      gap: 1px;
+      background: var(--line);
+      border: 1px solid var(--line);
+      margin-top: 1.7rem;
     }
 
     .rtca-card {
-      background: var(--navy-mid);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 1.2rem;
+      background: var(--panel);
+      padding: 1.25rem;
+      min-height: 135px;
     }
 
     .rtca-card h5 {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 0.82rem;
-      font-weight: 700;
-      color: var(--amber);
-      margin-bottom: 0.4rem;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--accent);
+      font-size: 0.74rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 0.65rem;
       display: flex;
+      gap: 0.45rem;
       align-items: center;
-      gap: 0.4rem;
     }
 
     .rtca-card p {
-      font-size: 0.8rem;
-      color: var(--text-dim);
-      line-height: 1.55;
+      color: var(--text-soft);
+      font-size: 0.88rem;
+      line-height: 1.5;
     }
 
     .poster-wrap {
-      margin-top: 1.5rem;
-      background: var(--surface-card);
-      border: 1px solid var(--border);
-      border-radius: 16px;
+      margin-top: 1.7rem;
+      background: var(--panel);
+      border: 1px solid var(--line);
       padding: 1rem;
     }
 
@@ -547,7 +541,6 @@
       width: 100%;
       height: 720px;
       border: none;
-      border-radius: 10px;
       background: #ffffff;
     }
 
@@ -555,130 +548,141 @@
       display: flex;
       justify-content: center;
       flex-wrap: wrap;
-      gap: 0.7rem;
+      gap: 0.75rem;
       margin-top: 1rem;
     }
 
     .poster-button {
       display: inline-flex;
       align-items: center;
-      gap: 0.45rem;
-      padding: 0.55rem 1rem;
-      border-radius: 8px;
-      background: rgba(56, 189, 248, 0.1);
-      color: var(--sky-blue);
-      border: 1px solid rgba(56, 189, 248, 0.22);
-      font-size: 0.86rem;
-      font-weight: 600;
+      gap: 0.5rem;
+      padding: 0.7rem 1rem;
+      border: 1px solid var(--line-strong);
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
       text-decoration: none;
-      transition: all 0.2s;
+      transition: transform 0.2s, background 0.2s;
     }
 
     .poster-button:hover {
-      background: rgba(56, 189, 248, 0.16);
-      color: #ffffff;
-      border-color: rgba(56, 189, 248, 0.4);
+      transform: translateY(-2px);
+      background: rgba(199, 255, 0, 0.18);
     }
 
     .future-banner {
-      background: linear-gradient(135deg, rgba(56,189,248,0.06), rgba(245,158,11,0.06));
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 1.5rem 2rem;
-      margin-top: 1.5rem;
+      margin-top: 1.7rem;
+      background:
+        linear-gradient(90deg, rgba(199,255,0,0.12), transparent),
+        var(--panel);
+      border: 1px solid var(--line);
+      padding: 1.6rem;
       display: flex;
       align-items: center;
-      gap: 1.5rem;
+      gap: 1.2rem;
     }
 
     .future-icon {
-      flex-shrink: 0;
-      width: 50px;
-      height: 50px;
-      border-radius: 12px;
-      background: rgba(56,189,248,0.1);
+      width: 54px;
+      height: 54px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.3rem;
-      color: var(--sky-blue);
+      border: 1px solid var(--line-strong);
+      color: var(--accent);
+      font-size: 1.2rem;
+      flex-shrink: 0;
     }
 
     .future-banner h4 {
-      font-size: 1rem;
-      font-weight: 700;
-      color: #ffffff;
-      margin-bottom: 0.3rem;
+      font-family: 'Space Grotesk', sans-serif;
+      color: var(--text);
+      font-size: 1.1rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      margin-bottom: 0.35rem;
     }
 
     .future-banner p {
-      font-size: 0.88rem;
-      color: var(--text-dim);
-      line-height: 1.6;
+      color: var(--text-soft);
+      font-size: 0.92rem;
+      line-height: 1.55;
     }
 
     .ref-list {
-      margin-top: 1rem;
-      padding-left: 0;
       list-style: none;
       counter-reset: ref;
+      margin-top: 1.5rem;
+      border: 1px solid var(--line);
+      background: var(--panel);
+      padding: 1.2rem;
     }
 
     .ref-list li {
       counter-increment: ref;
-      font-size: 0.82rem;
       color: var(--text-muted);
-      line-height: 1.65;
-      margin-bottom: 0.5rem;
-      padding-left: 2rem;
+      font-size: 0.84rem;
+      line-height: 1.55;
+      padding-left: 2.2rem;
       position: relative;
+      margin-bottom: 0.55rem;
+    }
+
+    .ref-list li:last-child {
+      margin-bottom: 0;
     }
 
     .ref-list li::before {
-      content: '[' counter(ref) ']';
+      content: "[" counter(ref) "]";
       position: absolute;
       left: 0;
-      color: var(--sky-dim);
-      font-weight: 600;
+      color: var(--accent);
       font-family: 'JetBrains Mono', monospace;
       font-size: 0.75rem;
     }
 
     footer.site-footer {
-      background: var(--navy-mid);
-      border-top: 1px solid var(--border);
-      padding: 2rem 1.5rem;
+      background: #050605;
+      border-top: 1px solid var(--line);
+      padding: 2.2rem 1.5rem;
       text-align: center;
     }
 
-    footer .footer-logos {
+    .footer-logos {
       display: flex;
       justify-content: center;
       align-items: center;
-      gap: 2rem;
+      gap: 1.6rem;
       margin-bottom: 1rem;
     }
 
-    footer .footer-logos span {
+    .footer-logos span {
       font-size: 0.85rem;
-      font-weight: 600;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
     }
 
-    footer .footer-logos .uw {
-      color: var(--gold-uw);
+    .footer-logos .uw {
+      color: var(--uw-gold);
     }
 
-    footer .footer-logos .guideair {
-      color: var(--sky-blue);
+    .footer-logos .guideair {
+      color: var(--accent);
     }
 
     footer p {
-      font-size: 0.75rem;
       color: var(--text-muted);
+      font-size: 0.75rem;
+      line-height: 1.55;
     }
 
     footer a {
-      color: var(--sky-blue);
+      color: var(--accent);
       text-decoration: none;
     }
 
@@ -686,21 +690,35 @@
       text-decoration: underline;
     }
 
-    @media (max-width: 768px) {
-      .hero-title {
-        font-size: 1.8rem;
+    @media (max-width: 980px) {
+      .hero-authors {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
       }
 
-      .pipe-stages {
-        grid-template-columns: 1fr;
+      .pipe-stages,
+      .module-grid,
+      .rtca-grid,
+      .quick-grid {
+        grid-template-columns: repeat(2, 1fr);
       }
 
-      .motivation-grid,
       .module-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .hero-section {
+        min-height: auto;
+        padding: 4rem 1rem 3rem;
       }
 
-      .rtca-grid {
+      .hero-authors,
+      .motivation-grid,
+      .pipe-stages,
+      .module-grid,
+      .rtca-grid,
+      .quick-grid {
         grid-template-columns: 1fr;
       }
 
@@ -710,48 +728,24 @@
 
       .future-banner {
         flex-direction: column;
-        text-align: center;
+        align-items: flex-start;
       }
     }
 
     @media (max-width: 480px) {
-      .hero-section {
-        padding: 3rem 1rem 2.5rem;
-      }
-
       .hero-links {
         flex-direction: column;
-        align-items: center;
+        align-items: stretch;
+      }
+
+      .h-link {
+        justify-content: center;
       }
 
       .poster-frame {
         height: 420px;
       }
     }
-
-    @keyframes fadeUp {
-      from {
-        opacity: 0;
-        transform: translateY(18px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .hero-section > * {
-      animation: fadeUp 0.5s ease-out both;
-    }
-
-    .hero-section > *:nth-child(1) { animation-delay: 0.05s; }
-    .hero-section > *:nth-child(2) { animation-delay: 0.12s; }
-    .hero-section > *:nth-child(3) { animation-delay: 0.19s; }
-    .hero-section > *:nth-child(4) { animation-delay: 0.26s; }
-    .hero-section > *:nth-child(5) { animation-delay: 0.33s; }
-    .hero-section > *:nth-child(6) { animation-delay: 0.40s; }
-    .hero-section > *:nth-child(7) { animation-delay: 0.47s; }
-    .hero-section > *:nth-child(8) { animation-delay: 0.54s; }
   </style>
 </head>
 
@@ -759,85 +753,138 @@
 
   <!-- HERO -->
   <section class="hero-section">
-    <div class="hero-badge">
-      <i class="fas fa-plane"></i>
-      UW ECE Capstone 2026
+    <div class="hero-inner">
+      <div class="hero-badge">
+        <i class="fas fa-plane"></i>
+        UW ECE Capstone 2026
+      </div>
+
+      <h1 class="hero-title">
+        <span class="accent">ClairVoyan</span><br>
+        Vision-Based DAA
+      </h1>
+
+      <p class="hero-subtitle">
+        A lightweight camera-only system for detecting, tracking, and avoiding airborne intruders.
+      </p>
+
+      <div class="hero-links">
+        <a href="#" class="h-link primary">
+          <i class="fab fa-github"></i> Code
+        </a>
+
+        <a href="#poster" class="h-link ghost">
+          <i class="fas fa-file-pdf"></i> Poster
+        </a>
+
+        <a href="#" class="h-link ghost">
+          <i class="fas fa-video"></i> Demo
+        </a>
+
+        <a href="#refs" class="h-link ghost">
+          <i class="fas fa-book"></i> References
+        </a>
+      </div>
+
+      <div class="hero-authors">
+        <div class="author-chip">
+          <img src="assets/images/team/yu-an-chen.jpeg" alt="Yu-An Chen">
+          <span>Yu-An Chen</span>
+        </div>
+
+        <div class="author-chip">
+          <img src="assets/images/team/gyungmin-ko.jpg" alt="Gyungmin Ko">
+          <span>Gyungmin Ko</span>
+        </div>
+
+        <div class="author-chip">
+          <img src="assets/images/team/ian-pan.jpg" alt="Ian Pan">
+          <span>Ian Pan</span>
+        </div>
+
+        <div class="author-chip">
+          <img src="assets/images/team/koume-matsutori.jpg" alt="Koume Matsutori">
+          <span>Koume Matsutori</span>
+        </div>
+
+        <div class="author-chip">
+          <img src="assets/images/team/nick-leung.jpg" alt="Nick Leung">
+          <span>Nick Leung</span>
+        </div>
+
+        <div class="author-chip">
+          <img src="assets/images/team/shreyas-krishnan.jpg" alt="Shreyas Krishnan">
+          <span>Shreyas Krishnan</span>
+        </div>
+      </div>
+
+      <div class="hero-affiliation">
+        <span class="uw-text">Electrical &amp; Computer Engineering, University of Washington</span>
+      </div>
+
+      <div class="hero-meta">
+        Faculty: Sep Makhsous &ensp;·&ensp; Mentors: Christina Sarieddine, Will Bach
+      </div>
     </div>
+  </section>
 
-    <h1 class="hero-title">
-      <span class="accent">ClairVoyan</span> DAA System<br>
-      Intelligent Vision-Based<br>Detect-and-Avoid for UAVs
-    </h1>
+  <!-- SNAPSHOT -->
+  <section class="sec">
+    <div class="container-main">
+      <div class="sec-kicker">Project Snapshot</div>
+      <h2 class="sec-title">Small UAVs Need Lightweight Collision Avoidance.</h2>
 
-    <p class="hero-subtitle">
-      A camera-only framework that detects, tracks, and avoids airborne intruders in real time — replacing heavy radar with lightweight deep learning.
-    </p>
+      <p class="sec-prose">
+        ClairVoyan replaces heavy sensing hardware with a vision-based pipeline designed for real-time detect-and-avoid.
+      </p>
 
-    <div class="hero-authors">
-      <span>Yu-An Chen</span>
-      <span>Gyungmin Ko</span>
-      <span>Ian Pan</span>
-      <span>Koume Matsutori</span>
-      <span>Nick Leung</span>
-      <span>Shreyas Krishnan</span>
-    </div>
+      <div class="quick-grid">
+        <div class="quick-card">
+          <h4>Input</h4>
+          <p>X-Plane synthetic encounters with diverse aircraft, lighting, and weather.</p>
+        </div>
 
-    <div class="hero-affiliation">
-      <span class="uw-text">Electrical &amp; Computer Engineering, University of Washington</span>
-    </div>
+        <div class="quick-card">
+          <h4>Core Method</h4>
+          <p>Frame alignment, cascaded detection, and temporal tracking.</p>
+        </div>
 
-    <div class="hero-meta">
-      Faculty: Sep Makhsous &ensp;·&ensp; Mentors: Christina Sarieddine, Will Bach
-    </div>
-
-    <div class="hero-links">
-      <a href="#" class="h-link primary">
-        <i class="fab fa-github"></i> Code
-      </a>
-      <a href="#poster" class="h-link ghost">
-        <i class="fas fa-file-pdf"></i> Poster
-      </a>
-      <a href="#" class="h-link ghost">
-        <i class="fas fa-video"></i> Demo
-      </a>
-      <a href="#refs" class="h-link ghost">
-        <i class="fas fa-book"></i> References
-      </a>
+        <div class="quick-card">
+          <h4>Goal</h4>
+          <p>Detect intruders early enough to support an avoid or hold decision.</p>
+        </div>
+      </div>
     </div>
   </section>
 
   <!-- MOTIVATION -->
-  <section class="sec">
+  <section class="sec alt">
     <div class="container-main">
-      <h2 class="sec-title">Motivation</h2>
-      <hr class="sec-rule">
+      <div class="sec-kicker">Motivation</div>
+      <h2 class="sec-title">Radar Is Too Heavy For Many Small UAVs.</h2>
 
       <p class="sec-prose">
-        Recent mid-air collision incidents — including a January 2025 collision near Washington D.C. — highlight the critical limitations of existing "See and Avoid" approaches. Current radar-based DAA systems are too heavy, too power-hungry, and too expensive for small remotely piloted aircraft. A camera-only solution can overcome these constraints while meeting RTCA DO-387 performance standards.
+        A camera-only DAA system can reduce size, weight, power, and cost while detecting non-cooperative aircraft.
       </p>
 
       <div class="motivation-grid">
         <div class="motive-card problem">
-          <h4><i class="fas fa-exclamation-circle"></i> Current System Limitations</h4>
+          <h4><i class="fas fa-triangle-exclamation"></i> Current Gap</h4>
           <ul>
-            <li>Exceeds 5 kg payload with high power draw — unfit for small RPAS</li>
-            <li>Radar detects cooperative aircraft only</li>
-            <li>Single-frame detection loses small aircraft in visual clutter</li>
-            <li>Detection remains difficult beyond long-range distances</li>
-            <li>Cannot reliably detect non-cooperative targets such as drones, gliders, and ultralights</li>
-            <li>No temporal cues — difficult to reject false positives</li>
+            <li>Radar payloads are often too heavy for small RPAS.</li>
+            <li>Cooperative-only sensing misses silent intruders.</li>
+            <li>Single-frame detection is fragile at long range.</li>
+            <li>False positives can trigger unreliable threat estimates.</li>
           </ul>
         </div>
 
         <div class="motive-card solution">
-          <h4><i class="fas fa-check-circle"></i> ClairVoyan Approach</h4>
+          <h4><i class="fas fa-crosshairs"></i> Our Approach</h4>
           <ul>
-            <li>Vision-only pipeline — lightweight enough for small UAV platforms</li>
-            <li>Ego-motion compensation isolates true intruder movement</li>
-            <li>Cascaded two-stage HRNet for long-range detection</li>
-            <li>Temporal tracking with Kalman filtering rejects false positives</li>
-            <li>X-Plane synthetic data enables diverse training scenarios</li>
-            <li>Designed with RTCA DO-387 requirements in mind</li>
+            <li>Use visual motion cues across multiple frames.</li>
+            <li>Refine small targets with a cascaded detector.</li>
+            <li>Track detections over time with Kalman filtering.</li>
+            <li>Prepare the output for onboard avoidance logic.</li>
           </ul>
         </div>
       </div>
@@ -845,48 +892,52 @@
   </section>
 
   <!-- SYSTEM PIPELINE -->
-  <section class="sec alt">
+  <section class="sec">
     <div class="container-main">
-      <h2 class="sec-title">System Pipeline</h2>
-      <hr class="sec-rule">
+      <div class="sec-kicker">System Pipeline</div>
+      <h2 class="sec-title">From Raw Frames To Track-Level Threat Cues.</h2>
+
+      <p class="sec-prose">
+        The pipeline stabilizes video, detects small aircraft, and tracks intruders across frames.
+      </p>
 
       <div class="pipeline-wrap">
         <div class="pipe-stages">
           <div class="pipe-stage">
-            <div class="pipe-num">1</div>
+            <div class="pipe-num">01</div>
             <h4>Frame Input</h4>
-            <p>X-Plane synthetic video with diverse weather and intruder types</p>
+            <p>Synthetic X-Plane encounters.</p>
           </div>
 
           <div class="pipe-stage active">
-            <div class="pipe-num">2</div>
-            <h4>Frame Alignment</h4>
-            <p>Ego-motion compensation via ResNet-34 optical flow</p>
+            <div class="pipe-num">02</div>
+            <h4>Alignment</h4>
+            <p>Optical-flow ego-motion compensation.</p>
           </div>
 
           <div class="pipe-stage active">
-            <div class="pipe-num">3</div>
+            <div class="pipe-num">03</div>
             <h4>Detection</h4>
-            <p>Cascaded HRNet-W32 to HRNet-W48 detector</p>
+            <p>HRNet proposals and crop refinement.</p>
           </div>
 
           <div class="pipe-stage active">
-            <div class="pipe-num">4</div>
+            <div class="pipe-num">04</div>
             <h4>Tracking</h4>
-            <p>Kalman filter and greedy association with confidence gating</p>
+            <p>Offset association and Kalman filtering.</p>
           </div>
 
           <div class="pipe-stage">
-            <div class="pipe-num">5</div>
+            <div class="pipe-num">05</div>
             <h4>Avoidance</h4>
-            <p>Threat evaluation followed by Avoid or Hold decision</p>
+            <p>Threat evaluation for avoid or hold.</p>
           </div>
         </div>
 
         <figure class="pipeline-figure">
           <img src="assets/images/pipeline.png" alt="ClairVoyan vision-based detect-and-avoid system pipeline diagram">
           <figcaption>
-            <strong>Figure 1.</strong> Vision-based DAA pipeline consisting of frame alignment, cascaded detection, cropped refinement, offset tracking, secondary classification, and 2D Kalman filtering.
+            <strong>Figure 1.</strong> Vision-based DAA pipeline with alignment, detection, tracking, classification, and filtering.
           </figcaption>
         </figure>
       </div>
@@ -894,112 +945,95 @@
   </section>
 
   <!-- CORE MODULES -->
-  <section class="sec">
+  <section class="sec alt">
     <div class="container-main">
-      <h2 class="sec-title">Core Modules</h2>
-      <hr class="sec-rule">
+      <div class="sec-kicker">Core Modules</div>
+      <h2 class="sec-title">A Compact Vision Stack For Long-Range Detection.</h2>
+
+      <p class="sec-prose">
+        Each module converts noisy video into a more stable estimate of intruder motion.
+      </p>
 
       <div class="module-grid">
         <div class="module-card">
-          <span class="mod-tag blue">Stage 2 — Alignment</span>
+          <span class="mod-tag">Alignment</span>
           <h4>Ego-Motion Compensation</h4>
-          <ul>
-            <li>ResNet-34 dense optical flow predictor</li>
-            <li>Aligns I<sub>t</sub> with I<sub>t−1</sub> to cancel camera motion</li>
-            <li>Uses sparse flow and flow confidence for robust frame alignment</li>
-            <li>Stabilizes temporal cues so true intruder motion becomes more salient</li>
-          </ul>
+          <p>ResNet-34 optical flow stabilizes the scene so intruder motion is easier to isolate.</p>
         </div>
 
         <div class="module-card">
-          <span class="mod-tag green">Stage 3 — Detection</span>
-          <h4>Cascaded HRNet Detector</h4>
-          <ul>
-            <li><strong>Stage A:</strong> HRNet-W32 full-resolution detector for initial proposals</li>
-            <li><strong>Stage B:</strong> HRNet-W48 cropped detector for refined local detection</li>
-            <li>Processes crops around top-K predictions</li>
-            <li>YOLO26 is being trained as a lightweight HRNet-W32 alternative</li>
-          </ul>
+          <span class="mod-tag">Detection</span>
+          <h4>Cascaded HRNet</h4>
+          <p>HRNet-W32 finds proposals, while HRNet-W48 refines small aircraft crops.</p>
         </div>
 
         <div class="module-card">
-          <span class="mod-tag amber">Stage 4 — Tracking</span>
-          <h4>Offset Tracking + Kalman Filtering</h4>
-          <ul>
-            <li>Offset-based association connects detections across frames</li>
-            <li>Track confidence and detection confidence are used for gating</li>
-            <li>Secondary ResNet-18 classifier helps reject false positives</li>
-            <li>2D Kalman filter smooths temporal trajectory estimates</li>
-          </ul>
+          <span class="mod-tag">Tracking</span>
+          <h4>Offset + Kalman</h4>
+          <p>Offset association and Kalman filtering maintain smoother track estimates.</p>
         </div>
 
         <div class="module-card">
-          <span class="mod-tag red">Training Data</span>
-          <h4>X-Plane Synthetic Pipeline</h4>
-          <ul>
-            <li>Synthetic encounter scenarios generated from X-Plane</li>
-            <li>Ground-truth labels exported for detector training and evaluation</li>
-            <li>Diverse weather, lighting, aircraft type, and relative-motion conditions</li>
-            <li>Supports controlled evaluation of long-range intruder detection</li>
-          </ul>
+          <span class="mod-tag">Alternative</span>
+          <h4>YOLO26 Training</h4>
+          <p>YOLO26 is being tested as a lighter detector for faster deployment.</p>
         </div>
       </div>
     </div>
   </section>
 
   <!-- RTCA DO-387 -->
-  <section class="sec alt">
+  <section class="sec">
     <div class="container-main">
-      <div class="rtca-header">
-        <i class="fas fa-shield-halved" style="color:var(--amber); font-size:1.2rem;"></i>
-        <div>
-          <h3>RTCA DO-387 Requirements</h3>
-          <span class="rtca-sub">Minimum Operational Performance Standards for EO/IR sensor systems</span>
-        </div>
-      </div>
+      <div class="sec-kicker">Requirements</div>
+      <h2 class="sec-title">Designed Around RTCA DO-387 Targets.</h2>
+
+      <p class="sec-prose">
+        The system is evaluated against aviation-focused range, field-of-view, tracking, and false-positive constraints.
+      </p>
 
       <div class="rtca-grid">
         <div class="rtca-card">
-          <h5><i class="fas fa-ruler"></i> Detection Distance</h5>
-          <p>Small: 2,698 m &ensp; Medium: 3,084 m &ensp; Large: 3,598 m.</p>
+          <h5><i class="fas fa-ruler"></i> Detection Range</h5>
+          <p>Small: 2,698 m; medium: 3,084 m; large: 3,598 m.</p>
         </div>
 
         <div class="rtca-card">
-          <h5><i class="fas fa-arrows-alt-h"></i> Field of View</h5>
-          <p>±110° horizontal and ±15° vertical — covers traffic from all forward directions.</p>
+          <h5><i class="fas fa-arrows-left-right"></i> Field of View</h5>
+          <p>±110° horizontal and ±15° vertical coverage.</p>
         </div>
 
         <div class="rtca-card">
-          <h5><i class="fas fa-layer-group"></i> Tracking Capacity</h5>
-          <p>Recognize and track at least 10 objects in complex airspace.</p>
+          <h5><i class="fas fa-layer-group"></i> Track Capacity</h5>
+          <p>Recognize and track at least 10 objects.</p>
         </div>
 
         <div class="rtca-card">
-          <h5><i class="fas fa-ban"></i> False Positive Rejection</h5>
-          <p>Reject ground objects and atmospheric objects from the threat set.</p>
+          <h5><i class="fas fa-ban"></i> False Positives</h5>
+          <p>Reject ground and atmospheric objects.</p>
         </div>
 
         <div class="rtca-card">
-          <h5><i class="fas fa-crosshairs"></i> State Estimation</h5>
-          <p>Estimate distance, angle, and azimuth for each intruder relative to the ownship.</p>
+          <h5><i class="fas fa-location-crosshairs"></i> State Estimation</h5>
+          <p>Estimate distance, angle, and azimuth.</p>
         </div>
 
         <div class="rtca-card">
-          <h5><i class="fas fa-tags"></i> Object Classification</h5>
-          <p>Classify speed groups and object types, including helicopter, drone, and airplane.</p>
+          <h5><i class="fas fa-plane"></i> Classification</h5>
+          <p>Separate helicopter, drone, and airplane classes.</p>
         </div>
       </div>
     </div>
   </section>
 
   <!-- POSTER -->
-  <section class="sec" id="poster">
+  <section class="sec alt" id="poster">
     <div class="container-main">
-      <h2 class="sec-title">Project Poster</h2>
-      <hr class="sec-rule">
+      <div class="sec-kicker">Poster</div>
+      <h2 class="sec-title">One-Page Project Summary.</h2>
 
       <p class="sec-prose">
-        The project poster summarizes the motivation, system pipeline, RTCA DO-387 requirements, current tracking results, and core contributions of the ClairVoyan DAA system.
+        The poster summarizes the motivation, pipeline, requirements, results, and contributions.
       </p>
 
       <div class="poster-wrap">
@@ -1011,11 +1045,11 @@
 
         <div class="poster-actions">
           <a href="assets/docs/clairvoyan-poster.pdf" class="poster-button" target="_blank" rel="noopener">
-            <i class="fas fa-up-right-from-square"></i> Open Full Poster PDF
+            <i class="fas fa-up-right-from-square"></i> Open Poster
           </a>
 
           <a href="assets/docs/clairvoyan-poster.pdf" class="poster-button" download>
-            <i class="fas fa-download"></i> Download Poster
+            <i class="fas fa-download"></i> Download
           </a>
         </div>
       </div>
@@ -1023,10 +1057,10 @@
   </section>
 
   <!-- FUTURE WORK -->
-  <section class="sec alt">
+  <section class="sec">
     <div class="container-main">
-      <h2 class="sec-title">Future Work</h2>
-      <hr class="sec-rule">
+      <div class="sec-kicker">Next Step</div>
+      <h2 class="sec-title">Toward Real-Time Onboard Avoidance.</h2>
 
       <div class="future-banner">
         <div class="future-icon">
@@ -1034,20 +1068,18 @@
         </div>
 
         <div>
-          <h4>Avoid / Hold Decision + FPGA Deployment</h4>
-          <p>
-            The next phase will implement the avoidance decision logic, including threat evaluation followed by an avoid or hold maneuver. The full pipeline will then be prepared for FPGA-based real-time onboard inference on small UAV platforms.
-          </p>
+          <h4>Avoid / Hold Logic + FPGA Deployment</h4>
+          <p>The next phase connects track-level threat estimates to onboard decision logic and real-time hardware deployment.</p>
         </div>
       </div>
     </div>
   </section>
 
   <!-- REFERENCES -->
-  <section class="sec" id="refs">
+  <section class="sec alt" id="refs">
     <div class="container-main">
-      <h2 class="sec-title">References</h2>
-      <hr class="sec-rule">
+      <div class="sec-kicker">References</div>
+      <h2 class="sec-title">Technical Grounding.</h2>
 
       <ol class="ref-list">
         <li>Smyers, E., et al. (2023). <em>AVOIDDS: Aircraft Vision-based Intruder Detection Dataset and Simulator.</em></li>
