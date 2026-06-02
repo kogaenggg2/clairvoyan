@@ -26,24 +26,22 @@
       --black: #000000;
       --charcoal: #070807;
       --charcoal-2: #111210;
-      --charcoal-3: #191a17;
       --panel: #0d0f0d;
       --panel-soft: #151713;
 
-      --line: rgba(255, 255, 255, 0.12);
-      --line-soft: rgba(255, 255, 255, 0.07);
-      --line-strong: rgba(223, 241, 64, 0.55);
+      --line: rgba(255, 255, 255, 0.14);
+      --line-soft: rgba(255, 255, 255, 0.08);
+      --line-strong: rgba(223, 241, 64, 0.58);
 
       --text: #ffffff;
-      --text-soft: #c7c9c2;
-      --text-muted: #787c73;
+      --text-soft: #d7d9d2;
+      --text-muted: #9a9f92;
 
       --accent: #DFF140;
-      --accent-soft: rgba(223, 241, 64, 0.12);
+      --accent-soft: rgba(223, 241, 64, 0.13);
       --accent-dim: #aebd2f;
 
       --danger: #ff5f45;
-      --ok: #9eff6f;
       --uw-gold: #b7a57a;
     }
 
@@ -72,15 +70,9 @@
     }
 
     .container-main {
-      width: min(1120px, calc(100% - 3rem));
+      width: min(1160px, calc(100% - 3rem));
       margin: 0 auto;
     }
-
-    .mono {
-      font-family: "Courier New", Courier, monospace;
-    }
-
-    /* HERO */
 
     .hero-section {
       position: relative;
@@ -120,7 +112,7 @@
     .hero-inner {
       position: relative;
       z-index: 1;
-      width: min(1120px, calc(100% - 3rem));
+      width: min(1160px, calc(100% - 3rem));
       margin: 0 auto;
       text-align: center;
     }
@@ -130,21 +122,21 @@
       align-items: center;
       gap: 0.55rem;
       margin-bottom: 1.6rem;
-      padding: 0.45rem 1rem;
+      padding: 0.5rem 1.1rem;
       border: 1px solid var(--line-strong);
       background: rgba(223, 241, 64, 0.06);
       color: var(--accent);
       font-family: "Courier New", Courier, monospace;
-      font-size: 0.72rem;
+      font-size: 0.84rem;
       font-weight: 700;
       letter-spacing: 0.12em;
       text-transform: uppercase;
     }
 
     .hero-title {
-      margin: 0 auto 1.1rem;
+      margin: 0 auto 1.2rem;
       color: var(--text);
-      font-size: clamp(2.6rem, 7vw, 6rem);
+      font-size: clamp(3.1rem, 7.4vw, 6.8rem);
       font-weight: 900;
       line-height: 0.92;
       letter-spacing: -0.075em;
@@ -156,10 +148,10 @@
     }
 
     .hero-subtitle {
-      max-width: 760px;
-      margin: 0 auto 2.2rem;
+      max-width: 860px;
+      margin: 0 auto 2.4rem;
       color: var(--text-soft);
-      font-size: clamp(1rem, 1.8vw, 1.18rem);
+      font-size: clamp(1.2rem, 2vw, 1.45rem);
       line-height: 1.55;
     }
 
@@ -167,22 +159,22 @@
       display: flex;
       justify-content: center;
       flex-wrap: wrap;
-      gap: 0.75rem;
-      margin-bottom: 2.7rem;
+      gap: 0.8rem;
+      margin-bottom: 2.9rem;
     }
 
     .h-link {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 0.55rem;
-      min-width: 120px;
-      padding: 0.78rem 1.1rem;
+      gap: 0.6rem;
+      min-width: 132px;
+      padding: 0.9rem 1.25rem;
       border: 1px solid var(--line);
       background: rgba(255, 255, 255, 0.035);
       color: var(--text);
       font-family: "Courier New", Courier, monospace;
-      font-size: 0.76rem;
+      font-size: 0.88rem;
       font-weight: 700;
       letter-spacing: 0.08em;
       text-decoration: none;
@@ -211,8 +203,8 @@
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 1px;
-      max-width: 940px;
-      margin: 0 auto 1.5rem;
+      max-width: 1040px;
+      margin: 0 auto 1.7rem;
       border: 1px solid var(--line);
       background: var(--line);
     }
@@ -220,9 +212,9 @@
     .author-chip {
       display: flex;
       align-items: center;
-      gap: 0.75rem;
-      padding: 0.65rem;
-      background: rgba(13, 15, 13, 0.9);
+      gap: 1rem;
+      padding: 0.85rem;
+      background: rgba(13, 15, 13, 0.92);
       text-align: left;
       transition: background 0.2s ease;
     }
@@ -232,25 +224,26 @@
     }
 
     .author-chip img {
-      width: 48px;
-      height: 48px;
-      flex: 0 0 48px;
+      width: 72px;
+      height: 72px;
+      flex: 0 0 72px;
       object-fit: cover;
       object-position: center;
-      border: 1px solid rgba(255,255,255,0.18);
-      filter: grayscale(10%) contrast(1.04);
+      border: 1px solid rgba(255,255,255,0.22);
+      background: #111210;
+      filter: grayscale(6%) contrast(1.04);
     }
 
     .author-chip span {
       color: var(--text);
-      font-size: 0.92rem;
+      font-size: 1.08rem;
       font-weight: 800;
-      line-height: 1.1;
+      line-height: 1.15;
     }
 
     .hero-affiliation {
       color: var(--text-muted);
-      font-size: 0.86rem;
+      font-size: 1.02rem;
       line-height: 1.5;
     }
 
@@ -260,16 +253,14 @@
     }
 
     .hero-meta {
-      margin-top: 0.25rem;
+      margin-top: 0.3rem;
       color: var(--text-muted);
-      font-size: 0.8rem;
+      font-size: 0.95rem;
       line-height: 1.5;
     }
 
-    /* GENERAL SECTIONS */
-
     .sec {
-      padding: 4rem 0;
+      padding: 4.5rem 0;
       background: var(--black);
       border-top: 1px solid var(--line-soft);
     }
@@ -279,20 +270,20 @@
     }
 
     .sec-kicker {
-      margin-bottom: 0.65rem;
+      margin-bottom: 0.75rem;
       color: var(--accent);
       font-family: "Courier New", Courier, monospace;
-      font-size: 0.72rem;
+      font-size: 0.86rem;
       font-weight: 700;
       letter-spacing: 0.14em;
       text-transform: uppercase;
     }
 
     .sec-title {
-      max-width: 900px;
-      margin-bottom: 0.95rem;
+      max-width: 980px;
+      margin-bottom: 1.1rem;
       color: var(--text);
-      font-size: clamp(1.75rem, 3.8vw, 3rem);
+      font-size: clamp(2rem, 4vw, 3.35rem);
       font-weight: 900;
       line-height: 1.02;
       letter-spacing: -0.055em;
@@ -300,14 +291,12 @@
     }
 
     .sec-prose {
-      max-width: 760px;
-      margin-bottom: 1.6rem;
+      max-width: 840px;
+      margin-bottom: 1.8rem;
       color: var(--text-soft);
-      font-size: 1rem;
+      font-size: 1.22rem;
       line-height: 1.6;
     }
-
-    /* QUICK GRID */
 
     .quick-grid,
     .motivation-grid,
@@ -316,7 +305,7 @@
     .rtca-grid {
       display: grid;
       gap: 1px;
-      margin-top: 1.6rem;
+      margin-top: 1.7rem;
       border: 1px solid var(--line);
       background: var(--line);
     }
@@ -334,17 +323,17 @@
     }
 
     .quick-card {
-      min-height: 145px;
-      padding: 1.35rem;
+      min-height: 160px;
+      padding: 1.55rem;
     }
 
     .quick-card h4,
     .motive-card h4,
     .rtca-card h5 {
-      margin-bottom: 0.7rem;
+      margin-bottom: 0.85rem;
       color: var(--accent);
       font-family: "Courier New", Courier, monospace;
-      font-size: 0.74rem;
+      font-size: 0.9rem;
       font-weight: 800;
       letter-spacing: 0.1em;
       text-transform: uppercase;
@@ -356,18 +345,16 @@
     .module-card p,
     .rtca-card p {
       color: var(--text-soft);
-      font-size: 0.92rem;
-      line-height: 1.5;
+      font-size: 1.08rem;
+      line-height: 1.55;
     }
-
-    /* MOTIVATION */
 
     .motivation-grid {
       grid-template-columns: repeat(2, 1fr);
     }
 
     .motive-card {
-      padding: 1.5rem;
+      padding: 1.65rem;
     }
 
     .motive-card.problem h4 {
@@ -384,8 +371,8 @@
 
     .motive-card li {
       position: relative;
-      padding-left: 1rem;
-      margin-bottom: 0.5rem;
+      padding-left: 1.2rem;
+      margin-bottom: 0.55rem;
     }
 
     .motive-card li:last-child {
@@ -399,13 +386,29 @@
       color: var(--text-muted);
     }
 
-    /* PIPELINE */
-
-    .pipeline-wrap {
-      margin-top: 1.7rem;
-      padding: 1.2rem;
+    .demo-wrap,
+    .pipeline-wrap,
+    .poster-wrap {
+      margin-top: 1.8rem;
+      padding: 1.15rem;
       border: 1px solid var(--line);
       background: var(--panel);
+    }
+
+    .demo-video {
+      display: block;
+      width: 100%;
+      max-height: 720px;
+      background: #000000;
+      border: 1px solid var(--line);
+    }
+
+    .demo-caption {
+      margin-top: 0.8rem;
+      color: var(--text-muted);
+      font-size: 1rem;
+      line-height: 1.5;
+      text-align: center;
     }
 
     .pipe-stages {
@@ -415,8 +418,8 @@
     }
 
     .pipe-stage {
-      min-height: 132px;
-      padding: 1.15rem 0.9rem;
+      min-height: 150px;
+      padding: 1.25rem 1rem;
       transition: background 0.2s ease;
     }
 
@@ -428,13 +431,13 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 30px;
-      height: 28px;
-      margin-bottom: 0.75rem;
+      width: 36px;
+      height: 32px;
+      margin-bottom: 0.85rem;
       border: 1px solid var(--line-strong);
       color: var(--accent);
       font-family: "Courier New", Courier, monospace;
-      font-size: 0.72rem;
+      font-size: 0.85rem;
       font-weight: 800;
     }
 
@@ -444,9 +447,9 @@
     }
 
     .pipe-stage h4 {
-      margin-bottom: 0.45rem;
+      margin-bottom: 0.5rem;
       color: var(--text);
-      font-size: 0.88rem;
+      font-size: 1.02rem;
       font-weight: 900;
       letter-spacing: 0.02em;
       text-transform: uppercase;
@@ -454,7 +457,7 @@
 
     .pipe-stage p {
       color: var(--text-muted);
-      font-size: 0.78rem;
+      font-size: 0.95rem;
     }
 
     .pipeline-figure {
@@ -470,80 +473,63 @@
     }
 
     .pipeline-figure figcaption {
-      margin-top: 0.65rem;
+      margin-top: 0.75rem;
       color: #32352f;
-      font-size: 0.82rem;
+      font-size: 1rem;
       font-style: italic;
       line-height: 1.45;
       text-align: center;
     }
-
-    /* MODULES */
 
     .module-grid {
       grid-template-columns: repeat(4, 1fr);
     }
 
     .module-card {
-      min-height: 210px;
-      padding: 1.35rem;
+      min-height: 235px;
+      padding: 1.55rem;
     }
 
     .mod-tag {
       display: inline-block;
-      margin-bottom: 0.9rem;
+      margin-bottom: 1rem;
       color: var(--accent);
       font-family: "Courier New", Courier, monospace;
-      font-size: 0.66rem;
+      font-size: 0.78rem;
       font-weight: 800;
       letter-spacing: 0.11em;
       text-transform: uppercase;
     }
 
     .module-card h4 {
-      margin-bottom: 0.75rem;
+      margin-bottom: 0.85rem;
       color: var(--text);
-      font-size: 1.04rem;
+      font-size: 1.24rem;
       font-weight: 900;
       line-height: 1.13;
       letter-spacing: -0.025em;
       text-transform: uppercase;
     }
 
-    /* RTCA */
-
     .rtca-grid {
       grid-template-columns: repeat(3, 1fr);
     }
 
     .rtca-card {
-      min-height: 135px;
-      padding: 1.25rem;
+      min-height: 150px;
+      padding: 1.45rem;
     }
 
     .rtca-card h5 {
       display: flex;
       align-items: center;
-      gap: 0.45rem;
+      gap: 0.5rem;
       line-height: 1.35;
-    }
-
-    .rtca-card p {
-      font-size: 0.88rem;
-    }
-
-    /* POSTER */
-
-    .poster-wrap {
-      margin-top: 1.7rem;
-      padding: 1rem;
-      border: 1px solid var(--line);
-      background: var(--panel);
     }
 
     .poster-frame {
       width: 100%;
-      height: 720px;
+      height: 760px;
       border: none;
       background: #ffffff;
     }
@@ -552,7 +538,7 @@
       display: flex;
       justify-content: center;
       flex-wrap: wrap;
-      gap: 0.75rem;
+      gap: 0.8rem;
       margin-top: 1rem;
     }
 
@@ -560,13 +546,13 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 0.5rem;
-      padding: 0.72rem 1rem;
+      gap: 0.55rem;
+      padding: 0.8rem 1.1rem;
       border: 1px solid var(--line-strong);
       background: var(--accent-soft);
       color: var(--accent);
       font-family: "Courier New", Courier, monospace;
-      font-size: 0.75rem;
+      font-size: 0.86rem;
       font-weight: 800;
       letter-spacing: 0.08em;
       text-decoration: none;
@@ -579,14 +565,12 @@
       transform: translateY(-2px);
     }
 
-    /* FUTURE */
-
     .future-banner {
       display: flex;
       align-items: center;
-      gap: 1.2rem;
-      margin-top: 1.7rem;
-      padding: 1.6rem;
+      gap: 1.3rem;
+      margin-top: 1.8rem;
+      padding: 1.8rem;
       border: 1px solid var(--line);
       background:
         linear-gradient(90deg, rgba(223, 241, 64, 0.13), transparent),
@@ -595,20 +579,20 @@
 
     .future-icon {
       display: flex;
-      flex: 0 0 54px;
+      flex: 0 0 64px;
       align-items: center;
       justify-content: center;
-      width: 54px;
-      height: 54px;
+      width: 64px;
+      height: 64px;
       border: 1px solid var(--line-strong);
       color: var(--accent);
-      font-size: 1.2rem;
+      font-size: 1.35rem;
     }
 
     .future-banner h4 {
-      margin-bottom: 0.35rem;
+      margin-bottom: 0.45rem;
       color: var(--text);
-      font-size: 1.1rem;
+      font-size: 1.35rem;
       font-weight: 900;
       letter-spacing: -0.02em;
       text-transform: uppercase;
@@ -616,15 +600,13 @@
 
     .future-banner p {
       color: var(--text-soft);
-      font-size: 0.92rem;
+      font-size: 1.12rem;
       line-height: 1.55;
     }
 
-    /* REFERENCES */
-
     .ref-list {
-      margin-top: 1.5rem;
-      padding: 1.2rem;
+      margin-top: 1.6rem;
+      padding: 1.4rem;
       border: 1px solid var(--line);
       background: var(--panel);
       list-style: none;
@@ -634,10 +616,10 @@
     .ref-list li {
       position: relative;
       counter-increment: ref;
-      margin-bottom: 0.55rem;
-      padding-left: 2.2rem;
+      margin-bottom: 0.65rem;
+      padding-left: 2.4rem;
       color: var(--text-muted);
-      font-size: 0.84rem;
+      font-size: 1rem;
       line-height: 1.55;
     }
 
@@ -651,14 +633,12 @@
       left: 0;
       color: var(--accent);
       font-family: "Courier New", Courier, monospace;
-      font-size: 0.75rem;
+      font-size: 0.85rem;
       font-weight: 800;
     }
 
-    /* FOOTER */
-
     .site-footer {
-      padding: 2.2rem 1.5rem;
+      padding: 2.4rem 1.5rem;
       border-top: 1px solid var(--line);
       background: #000000;
       text-align: center;
@@ -673,7 +653,7 @@
     }
 
     .footer-logos span {
-      font-size: 0.85rem;
+      font-size: 0.95rem;
       font-weight: 800;
       letter-spacing: 0.06em;
       text-transform: uppercase;
@@ -689,7 +669,7 @@
 
     .site-footer p {
       color: var(--text-muted);
-      font-size: 0.75rem;
+      font-size: 0.86rem;
       line-height: 1.55;
     }
 
@@ -701,8 +681,6 @@
     .site-footer a:hover {
       text-decoration: underline;
     }
-
-    /* RESPONSIVE */
 
     @media (max-width: 980px) {
       .hero-authors {
@@ -724,7 +702,7 @@
     @media (max-width: 768px) {
       .container-main,
       .hero-inner {
-        width: min(100% - 2rem, 1120px);
+        width: min(100% - 2rem, 1160px);
       }
 
       .hero-section {
@@ -746,7 +724,7 @@
       }
 
       .poster-frame {
-        height: 520px;
+        height: 540px;
       }
 
       .future-banner {
@@ -766,9 +744,9 @@
       }
 
       .author-chip img {
-        width: 44px;
-        height: 44px;
-        flex-basis: 44px;
+        width: 60px;
+        height: 60px;
+        flex-basis: 60px;
       }
 
       .poster-frame {
@@ -806,7 +784,7 @@
           <i class="fas fa-file-pdf"></i> Poster
         </a>
 
-        <a href="#" class="h-link ghost">
+        <a href="#demo" class="h-link ghost">
           <i class="fas fa-video"></i> Demo
         </a>
 
@@ -857,8 +835,31 @@
     </div>
   </section>
 
+  <!-- DEMO -->
+  <section class="sec" id="demo">
+    <div class="container-main">
+      <div class="sec-kicker">Live Demo</div>
+      <h2 class="sec-title">YOLO26 Detection On A Synthetic Encounter.</h2>
+
+      <p class="sec-prose">
+        The demo overlays detection results and metrics on an X-Plane encounter video.
+      </p>
+
+      <div class="demo-wrap">
+        <video class="demo-video" controls muted playsinline preload="metadata">
+          <source src="assets/video/metrics_overlay.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+
+        <p class="demo-caption">
+          Demo video: detection overlay with frame-level metrics.
+        </p>
+      </div>
+    </div>
+  </section>
+
   <!-- SNAPSHOT -->
-  <section class="sec">
+  <section class="sec alt">
     <div class="container-main">
       <div class="sec-kicker">Project Snapshot</div>
       <h2 class="sec-title">Small UAVs Need Lightweight Collision Avoidance.</h2>
@@ -887,7 +888,7 @@
   </section>
 
   <!-- MOTIVATION -->
-  <section class="sec alt">
+  <section class="sec">
     <div class="container-main">
       <div class="sec-kicker">Motivation</div>
       <h2 class="sec-title">Radar Is Too Heavy For Many Small UAVs.</h2>
@@ -921,7 +922,7 @@
   </section>
 
   <!-- SYSTEM PIPELINE -->
-  <section class="sec">
+  <section class="sec alt">
     <div class="container-main">
       <div class="sec-kicker">System Pipeline</div>
       <h2 class="sec-title">From Raw Frames To Track-Level Threat Cues.</h2>
@@ -974,7 +975,7 @@
   </section>
 
   <!-- CORE MODULES -->
-  <section class="sec alt">
+  <section class="sec">
     <div class="container-main">
       <div class="sec-kicker">Core Modules</div>
       <h2 class="sec-title">A Compact Vision Stack For Long-Range Detection.</h2>
@@ -1012,7 +1013,7 @@
   </section>
 
   <!-- RTCA DO-387 -->
-  <section class="sec">
+  <section class="sec alt">
     <div class="container-main">
       <div class="sec-kicker">Requirements</div>
       <h2 class="sec-title">Designed Around RTCA DO-387 Targets.</h2>
@@ -1056,7 +1057,7 @@
   </section>
 
   <!-- POSTER -->
-  <section class="sec alt" id="poster">
+  <section class="sec" id="poster">
     <div class="container-main">
       <div class="sec-kicker">Poster</div>
       <h2 class="sec-title">One-Page Project Summary.</h2>
@@ -1086,7 +1087,7 @@
   </section>
 
   <!-- FUTURE WORK -->
-  <section class="sec">
+  <section class="sec alt">
     <div class="container-main">
       <div class="sec-kicker">Next Step</div>
       <h2 class="sec-title">Toward Real-Time Onboard Avoidance.</h2>
@@ -1105,7 +1106,7 @@
   </section>
 
   <!-- REFERENCES -->
-  <section class="sec alt" id="refs">
+  <section class="sec" id="refs">
     <div class="container-main">
       <div class="sec-kicker">References</div>
       <h2 class="sec-title">Technical Grounding.</h2>
