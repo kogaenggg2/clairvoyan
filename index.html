@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <meta name="title" content="ClairVoyan DAA System - Vision-Based Detect-and-Avoid for UAVs">
@@ -12,31 +13,37 @@
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="GuideAir Labs &middot; UW ECE">
   <meta property="og:title" content="ClairVoyan DAA System: Vision-Based Detect-and-Avoid for UAVs">
+  <meta property="og:description" content="A lightweight camera-only system for detecting, tracking, and avoiding airborne intruders.">
+
+  <meta name="theme-color" content="#000000">
 
   <title>ClairVoyan DAA | Vision-Based Detect-and-Avoid for UAVs</title>
 
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
   <style>
     :root {
-      --black: #050605;
-      --charcoal: #0b0d0b;
-      --charcoal-2: #111410;
-      --charcoal-3: #181d17;
-      --panel: #0f120e;
-      --panel-soft: #151a14;
-      --line: rgba(236, 255, 210, 0.13);
-      --line-strong: rgba(199, 255, 0, 0.35);
-      --text: #f4f7ef;
-      --text-soft: #b8beb3;
-      --text-muted: #7f887a;
-      --accent: #c7ff00;
-      --accent-soft: rgba(199, 255, 0, 0.12);
-      --accent-dim: #8fb800;
+      --black: #000000;
+      --charcoal: #070807;
+      --charcoal-2: #111210;
+      --charcoal-3: #191a17;
+      --panel: #0d0f0d;
+      --panel-soft: #151713;
+
+      --line: rgba(255, 255, 255, 0.12);
+      --line-soft: rgba(255, 255, 255, 0.07);
+      --line-strong: rgba(223, 241, 64, 0.55);
+
+      --text: #ffffff;
+      --text-soft: #c7c9c2;
+      --text-muted: #787c73;
+
+      --accent: #DFF140;
+      --accent-soft: rgba(223, 241, 64, 0.12);
+      --accent-dim: #aebd2f;
+
       --danger: #ff5f45;
-      --ok: #8cff66;
+      --ok: #9eff6f;
       --uw-gold: #b7a57a;
     }
 
@@ -48,13 +55,16 @@
 
     html {
       scroll-behavior: smooth;
+      background: var(--black);
     }
 
     body {
-      font-family: 'Outfit', sans-serif;
+      min-height: 100%;
       background: var(--black);
       color: var(--text);
+      font-family: Helvetica, Arial, sans-serif;
       -webkit-font-smoothing: antialiased;
+      text-rendering: geometricPrecision;
     }
 
     a {
@@ -62,24 +72,28 @@
     }
 
     .container-main {
-      max-width: 1080px;
+      width: min(1120px, calc(100% - 3rem));
       margin: 0 auto;
-      padding: 0 1.5rem;
     }
+
+    .mono {
+      font-family: "Courier New", Courier, monospace;
+    }
+
+    /* HERO */
 
     .hero-section {
       position: relative;
-      min-height: 92vh;
-      padding: 5rem 1.5rem 4rem;
+      min-height: 94vh;
       display: flex;
       align-items: center;
       justify-content: center;
-      text-align: center;
       overflow: hidden;
+      padding: 5rem 0 4rem;
       background:
-        radial-gradient(circle at 72% 25%, rgba(199, 255, 0, 0.10), transparent 28%),
-        radial-gradient(circle at 15% 82%, rgba(255, 255, 255, 0.055), transparent 30%),
-        linear-gradient(180deg, #050605 0%, #0b0d0b 55%, #050605 100%);
+        radial-gradient(circle at 72% 22%, rgba(223, 241, 64, 0.11), transparent 26%),
+        radial-gradient(circle at 12% 78%, rgba(255, 255, 255, 0.055), transparent 28%),
+        linear-gradient(180deg, #000000 0%, #070807 55%, #000000 100%);
     }
 
     .hero-section::before {
@@ -89,8 +103,9 @@
       background-image:
         linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
         linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
-      background-size: 72px 72px;
+      background-size: 76px 76px;
       mask-image: radial-gradient(circle at 50% 38%, black 0%, transparent 72%);
+      pointer-events: none;
     }
 
     .hero-section::after {
@@ -99,41 +114,41 @@
       inset: auto 0 0 0;
       height: 1px;
       background: linear-gradient(90deg, transparent, var(--accent), transparent);
-      opacity: 0.6;
+      opacity: 0.7;
     }
 
     .hero-inner {
       position: relative;
       z-index: 1;
-      max-width: 1120px;
+      width: min(1120px, calc(100% - 3rem));
       margin: 0 auto;
+      text-align: center;
     }
 
     .hero-badge {
       display: inline-flex;
       align-items: center;
       gap: 0.55rem;
-      border: 1px solid var(--line-strong);
-      background: rgba(199, 255, 0, 0.06);
-      color: var(--accent);
-      border-radius: 999px;
+      margin-bottom: 1.6rem;
       padding: 0.45rem 1rem;
-      font-family: 'JetBrains Mono', monospace;
+      border: 1px solid var(--line-strong);
+      background: rgba(223, 241, 64, 0.06);
+      color: var(--accent);
+      font-family: "Courier New", Courier, monospace;
       font-size: 0.72rem;
+      font-weight: 700;
       letter-spacing: 0.12em;
       text-transform: uppercase;
-      margin-bottom: 1.6rem;
     }
 
     .hero-title {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: clamp(2.4rem, 7vw, 5.7rem);
-      line-height: 0.94;
-      font-weight: 800;
-      letter-spacing: -0.07em;
+      margin: 0 auto 1.1rem;
       color: var(--text);
+      font-size: clamp(2.6rem, 7vw, 6rem);
+      font-weight: 900;
+      line-height: 0.92;
+      letter-spacing: -0.075em;
       text-transform: uppercase;
-      margin-bottom: 1.2rem;
     }
 
     .hero-title .accent {
@@ -141,10 +156,10 @@
     }
 
     .hero-subtitle {
-      max-width: 720px;
+      max-width: 760px;
       margin: 0 auto 2.2rem;
       color: var(--text-soft);
-      font-size: 1.12rem;
+      font-size: clamp(1rem, 1.8vw, 1.18rem);
       line-height: 1.55;
     }
 
@@ -153,110 +168,110 @@
       justify-content: center;
       flex-wrap: wrap;
       gap: 0.75rem;
-      margin-bottom: 2.6rem;
+      margin-bottom: 2.7rem;
     }
 
     .h-link {
       display: inline-flex;
       align-items: center;
+      justify-content: center;
       gap: 0.55rem;
-      padding: 0.75rem 1.1rem;
-      border-radius: 2px;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.78rem;
-      font-weight: 600;
+      min-width: 120px;
+      padding: 0.78rem 1.1rem;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.035);
+      color: var(--text);
+      font-family: "Courier New", Courier, monospace;
+      font-size: 0.76rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
       text-decoration: none;
       text-transform: uppercase;
-      letter-spacing: 0.06em;
-      transition: transform 0.2s, background 0.2s, border-color 0.2s;
+      transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
     }
 
     .h-link.primary {
       background: var(--accent);
-      color: #050605;
-      border: 1px solid var(--accent);
+      border-color: var(--accent);
+      color: #000000;
     }
 
     .h-link.primary:hover {
+      background: #ecff55;
       transform: translateY(-2px);
-      background: #d7ff3a;
-    }
-
-    .h-link.ghost {
-      background: rgba(255,255,255,0.035);
-      color: var(--text);
-      border: 1px solid var(--line);
     }
 
     .h-link.ghost:hover {
-      transform: translateY(-2px);
-      border-color: var(--line-strong);
       background: var(--accent-soft);
+      border-color: var(--line-strong);
+      transform: translateY(-2px);
     }
 
     .hero-authors {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 0.8rem;
-      max-width: 920px;
-      margin: 0 auto 1.4rem;
+      gap: 1px;
+      max-width: 940px;
+      margin: 0 auto 1.5rem;
+      border: 1px solid var(--line);
+      background: var(--line);
     }
 
     .author-chip {
       display: flex;
       align-items: center;
       gap: 0.75rem;
-      padding: 0.55rem;
-      background: rgba(255,255,255,0.035);
-      border: 1px solid var(--line);
-      border-radius: 4px;
+      padding: 0.65rem;
+      background: rgba(13, 15, 13, 0.9);
       text-align: left;
-      transition: transform 0.2s, border-color 0.2s, background 0.2s;
+      transition: background 0.2s ease;
     }
 
     .author-chip:hover {
-      transform: translateY(-2px);
-      border-color: var(--line-strong);
-      background: rgba(199,255,0,0.055);
+      background: rgba(223, 241, 64, 0.075);
     }
 
     .author-chip img {
-      width: 46px;
-      height: 46px;
-      border-radius: 2px;
+      width: 48px;
+      height: 48px;
+      flex: 0 0 48px;
       object-fit: cover;
       object-position: center;
       border: 1px solid rgba(255,255,255,0.18);
-      filter: grayscale(12%) contrast(1.04);
+      filter: grayscale(10%) contrast(1.04);
     }
 
     .author-chip span {
-      font-size: 0.92rem;
-      font-weight: 700;
       color: var(--text);
-      line-height: 1.15;
+      font-size: 0.92rem;
+      font-weight: 800;
+      line-height: 1.1;
     }
 
     .hero-affiliation {
       color: var(--text-muted);
       font-size: 0.86rem;
+      line-height: 1.5;
     }
 
     .hero-affiliation .uw-text {
       color: var(--uw-gold);
-      font-weight: 700;
+      font-weight: 800;
     }
 
     .hero-meta {
-      margin-top: 0.3rem;
+      margin-top: 0.25rem;
       color: var(--text-muted);
       font-size: 0.8rem;
+      line-height: 1.5;
     }
+
+    /* GENERAL SECTIONS */
 
     .sec {
       padding: 4rem 0;
       background: var(--black);
-      border-top: 1px solid rgba(255,255,255,0.035);
+      border-top: 1px solid var(--line-soft);
     }
 
     .sec.alt {
@@ -264,86 +279,95 @@
     }
 
     .sec-kicker {
-      font-family: 'JetBrains Mono', monospace;
+      margin-bottom: 0.65rem;
       color: var(--accent);
+      font-family: "Courier New", Courier, monospace;
       font-size: 0.72rem;
+      font-weight: 700;
       letter-spacing: 0.14em;
       text-transform: uppercase;
-      margin-bottom: 0.6rem;
     }
 
     .sec-title {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: clamp(1.65rem, 3.5vw, 2.7rem);
-      line-height: 1.05;
-      font-weight: 800;
-      letter-spacing: -0.045em;
+      max-width: 900px;
+      margin-bottom: 0.95rem;
       color: var(--text);
+      font-size: clamp(1.75rem, 3.8vw, 3rem);
+      font-weight: 900;
+      line-height: 1.02;
+      letter-spacing: -0.055em;
       text-transform: uppercase;
-      margin-bottom: 0.9rem;
     }
 
     .sec-prose {
       max-width: 760px;
+      margin-bottom: 1.6rem;
       color: var(--text-soft);
       font-size: 1rem;
-      line-height: 1.65;
-      margin-bottom: 1.6rem;
+      line-height: 1.6;
+    }
+
+    /* QUICK GRID */
+
+    .quick-grid,
+    .motivation-grid,
+    .pipe-stages,
+    .module-grid,
+    .rtca-grid {
+      display: grid;
+      gap: 1px;
+      margin-top: 1.6rem;
+      border: 1px solid var(--line);
+      background: var(--line);
     }
 
     .quick-grid {
-      display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 1px;
-      background: var(--line);
-      border: 1px solid var(--line);
-      margin-top: 1.5rem;
+    }
+
+    .quick-card,
+    .motive-card,
+    .pipe-stage,
+    .module-card,
+    .rtca-card {
+      background: var(--panel);
     }
 
     .quick-card {
-      background: var(--panel);
-      padding: 1.4rem;
       min-height: 145px;
+      padding: 1.35rem;
     }
 
-    .quick-card h4 {
-      font-family: 'JetBrains Mono', monospace;
+    .quick-card h4,
+    .motive-card h4,
+    .rtca-card h5 {
+      margin-bottom: 0.7rem;
       color: var(--accent);
-      font-size: 0.72rem;
+      font-family: "Courier New", Courier, monospace;
+      font-size: 0.74rem;
+      font-weight: 800;
       letter-spacing: 0.1em;
       text-transform: uppercase;
-      margin-bottom: 0.7rem;
     }
 
-    .quick-card p {
+    .quick-card p,
+    .motive-card li,
+    .pipe-stage p,
+    .module-card p,
+    .rtca-card p {
       color: var(--text-soft);
-      font-size: 0.95rem;
-      line-height: 1.55;
+      font-size: 0.92rem;
+      line-height: 1.5;
     }
+
+    /* MOTIVATION */
 
     .motivation-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1px;
-      background: var(--line);
-      border: 1px solid var(--line);
-      margin-top: 1.7rem;
+      grid-template-columns: repeat(2, 1fr);
     }
 
     .motive-card {
-      background: var(--panel);
-      padding: 1.6rem;
-    }
-
-    .motive-card h4 {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.78rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      margin-bottom: 1rem;
-      display: flex;
-      gap: 0.5rem;
-      align-items: center;
+      padding: 1.5rem;
     }
 
     .motive-card.problem h4 {
@@ -359,12 +383,13 @@
     }
 
     .motive-card li {
-      color: var(--text-soft);
-      font-size: 0.9rem;
-      line-height: 1.5;
-      padding-left: 1rem;
       position: relative;
-      margin-bottom: 0.45rem;
+      padding-left: 1rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .motive-card li:last-child {
+      margin-bottom: 0;
     }
 
     .motive-card li::before {
@@ -374,71 +399,68 @@
       color: var(--text-muted);
     }
 
+    /* PIPELINE */
+
     .pipeline-wrap {
       margin-top: 1.7rem;
-      background: var(--panel);
-      border: 1px solid var(--line);
       padding: 1.2rem;
+      border: 1px solid var(--line);
+      background: var(--panel);
     }
 
     .pipe-stages {
-      display: grid;
       grid-template-columns: repeat(5, 1fr);
-      gap: 1px;
-      background: var(--line);
-      border: 1px solid var(--line);
+      margin-top: 0;
       margin-bottom: 1.2rem;
     }
 
     .pipe-stage {
-      background: var(--charcoal-2);
-      padding: 1.2rem 0.9rem;
-      min-height: 130px;
-      transition: background 0.2s, transform 0.2s;
+      min-height: 132px;
+      padding: 1.15rem 0.9rem;
+      transition: background 0.2s ease;
     }
 
     .pipe-stage:hover {
-      transform: translateY(-2px);
       background: var(--panel-soft);
     }
 
     .pipe-num {
       display: inline-flex;
-      width: 26px;
-      height: 26px;
       align-items: center;
       justify-content: center;
+      width: 30px;
+      height: 28px;
+      margin-bottom: 0.75rem;
       border: 1px solid var(--line-strong);
       color: var(--accent);
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.75rem;
-      margin-bottom: 0.75rem;
+      font-family: "Courier New", Courier, monospace;
+      font-size: 0.72rem;
+      font-weight: 800;
+    }
+
+    .pipe-stage.active .pipe-num {
+      background: var(--accent);
+      color: #000000;
     }
 
     .pipe-stage h4 {
+      margin-bottom: 0.45rem;
       color: var(--text);
       font-size: 0.88rem;
-      font-weight: 800;
-      text-transform: uppercase;
+      font-weight: 900;
       letter-spacing: 0.02em;
-      margin-bottom: 0.45rem;
+      text-transform: uppercase;
     }
 
     .pipe-stage p {
       color: var(--text-muted);
       font-size: 0.78rem;
-      line-height: 1.45;
-    }
-
-    .pipe-stage.active .pipe-num {
-      background: var(--accent);
-      color: #050605;
     }
 
     .pipeline-figure {
-      background: #f4f7ef;
       padding: 0.75rem;
       border: 1px solid var(--line);
+      background: #f4f7ef;
     }
 
     .pipeline-figure img {
@@ -448,93 +470,75 @@
     }
 
     .pipeline-figure figcaption {
-      color: #353a32;
+      margin-top: 0.65rem;
+      color: #32352f;
       font-size: 0.82rem;
+      font-style: italic;
       line-height: 1.45;
       text-align: center;
-      margin-top: 0.65rem;
-      font-style: italic;
     }
 
+    /* MODULES */
+
     .module-grid {
-      display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 1px;
-      background: var(--line);
-      border: 1px solid var(--line);
-      margin-top: 1.7rem;
     }
 
     .module-card {
-      background: var(--panel);
-      padding: 1.35rem;
       min-height: 210px;
+      padding: 1.35rem;
     }
 
     .mod-tag {
       display: inline-block;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.65rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--accent);
       margin-bottom: 0.9rem;
+      color: var(--accent);
+      font-family: "Courier New", Courier, monospace;
+      font-size: 0.66rem;
+      font-weight: 800;
+      letter-spacing: 0.11em;
+      text-transform: uppercase;
     }
 
     .module-card h4 {
-      font-family: 'Space Grotesk', sans-serif;
-      color: var(--text);
-      font-size: 1.05rem;
-      line-height: 1.15;
-      font-weight: 800;
-      text-transform: uppercase;
       margin-bottom: 0.75rem;
+      color: var(--text);
+      font-size: 1.04rem;
+      font-weight: 900;
+      line-height: 1.13;
+      letter-spacing: -0.025em;
+      text-transform: uppercase;
     }
 
-    .module-card p {
-      color: var(--text-soft);
-      font-size: 0.9rem;
-      line-height: 1.55;
-    }
+    /* RTCA */
 
     .rtca-grid {
-      display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 1px;
-      background: var(--line);
-      border: 1px solid var(--line);
-      margin-top: 1.7rem;
     }
 
     .rtca-card {
-      background: var(--panel);
-      padding: 1.25rem;
       min-height: 135px;
+      padding: 1.25rem;
     }
 
     .rtca-card h5 {
-      font-family: 'JetBrains Mono', monospace;
-      color: var(--accent);
-      font-size: 0.74rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      margin-bottom: 0.65rem;
       display: flex;
-      gap: 0.45rem;
       align-items: center;
+      gap: 0.45rem;
+      line-height: 1.35;
     }
 
     .rtca-card p {
-      color: var(--text-soft);
       font-size: 0.88rem;
-      line-height: 1.5;
     }
+
+    /* POSTER */
 
     .poster-wrap {
       margin-top: 1.7rem;
-      background: var(--panel);
-      border: 1px solid var(--line);
       padding: 1rem;
+      border: 1px solid var(--line);
+      background: var(--panel);
     }
 
     .poster-frame {
@@ -555,56 +559,59 @@
     .poster-button {
       display: inline-flex;
       align-items: center;
+      justify-content: center;
       gap: 0.5rem;
-      padding: 0.7rem 1rem;
+      padding: 0.72rem 1rem;
       border: 1px solid var(--line-strong);
       background: var(--accent-soft);
       color: var(--accent);
-      font-family: 'JetBrains Mono', monospace;
+      font-family: "Courier New", Courier, monospace;
       font-size: 0.75rem;
-      font-weight: 700;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
+      font-weight: 800;
+      letter-spacing: 0.08em;
       text-decoration: none;
-      transition: transform 0.2s, background 0.2s;
+      text-transform: uppercase;
+      transition: background 0.2s ease, transform 0.2s ease;
     }
 
     .poster-button:hover {
+      background: rgba(223, 241, 64, 0.18);
       transform: translateY(-2px);
-      background: rgba(199, 255, 0, 0.18);
     }
 
+    /* FUTURE */
+
     .future-banner {
-      margin-top: 1.7rem;
-      background:
-        linear-gradient(90deg, rgba(199,255,0,0.12), transparent),
-        var(--panel);
-      border: 1px solid var(--line);
-      padding: 1.6rem;
       display: flex;
       align-items: center;
       gap: 1.2rem;
+      margin-top: 1.7rem;
+      padding: 1.6rem;
+      border: 1px solid var(--line);
+      background:
+        linear-gradient(90deg, rgba(223, 241, 64, 0.13), transparent),
+        var(--panel);
     }
 
     .future-icon {
-      width: 54px;
-      height: 54px;
       display: flex;
+      flex: 0 0 54px;
       align-items: center;
       justify-content: center;
+      width: 54px;
+      height: 54px;
       border: 1px solid var(--line-strong);
       color: var(--accent);
       font-size: 1.2rem;
-      flex-shrink: 0;
     }
 
     .future-banner h4 {
-      font-family: 'Space Grotesk', sans-serif;
+      margin-bottom: 0.35rem;
       color: var(--text);
       font-size: 1.1rem;
-      font-weight: 800;
+      font-weight: 900;
+      letter-spacing: -0.02em;
       text-transform: uppercase;
-      margin-bottom: 0.35rem;
     }
 
     .future-banner p {
@@ -613,23 +620,25 @@
       line-height: 1.55;
     }
 
+    /* REFERENCES */
+
     .ref-list {
-      list-style: none;
-      counter-reset: ref;
       margin-top: 1.5rem;
+      padding: 1.2rem;
       border: 1px solid var(--line);
       background: var(--panel);
-      padding: 1.2rem;
+      list-style: none;
+      counter-reset: ref;
     }
 
     .ref-list li {
+      position: relative;
       counter-increment: ref;
+      margin-bottom: 0.55rem;
+      padding-left: 2.2rem;
       color: var(--text-muted);
       font-size: 0.84rem;
       line-height: 1.55;
-      padding-left: 2.2rem;
-      position: relative;
-      margin-bottom: 0.55rem;
     }
 
     .ref-list li:last-child {
@@ -641,14 +650,17 @@
       position: absolute;
       left: 0;
       color: var(--accent);
-      font-family: 'JetBrains Mono', monospace;
+      font-family: "Courier New", Courier, monospace;
       font-size: 0.75rem;
+      font-weight: 800;
     }
 
-    footer.site-footer {
-      background: #050605;
-      border-top: 1px solid var(--line);
+    /* FOOTER */
+
+    .site-footer {
       padding: 2.2rem 1.5rem;
+      border-top: 1px solid var(--line);
+      background: #000000;
       text-align: center;
     }
 
@@ -662,9 +674,9 @@
 
     .footer-logos span {
       font-size: 0.85rem;
-      font-weight: 700;
-      text-transform: uppercase;
+      font-weight: 800;
       letter-spacing: 0.06em;
+      text-transform: uppercase;
     }
 
     .footer-logos .uw {
@@ -675,51 +687,62 @@
       color: var(--accent);
     }
 
-    footer p {
+    .site-footer p {
       color: var(--text-muted);
       font-size: 0.75rem;
       line-height: 1.55;
     }
 
-    footer a {
+    .site-footer a {
       color: var(--accent);
       text-decoration: none;
     }
 
-    footer a:hover {
+    .site-footer a:hover {
       text-decoration: underline;
     }
+
+    /* RESPONSIVE */
 
     @media (max-width: 980px) {
       .hero-authors {
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
 
+      .quick-grid,
       .pipe-stages,
       .module-grid,
-      .rtca-grid,
-      .quick-grid {
+      .rtca-grid {
         grid-template-columns: repeat(2, 1fr);
       }
 
-      .module-grid {
-        grid-template-columns: repeat(2, 1fr);
+      .pipe-stages .pipe-stage:last-child {
+        grid-column: span 2;
       }
     }
 
     @media (max-width: 768px) {
+      .container-main,
+      .hero-inner {
+        width: min(100% - 2rem, 1120px);
+      }
+
       .hero-section {
         min-height: auto;
-        padding: 4rem 1rem 3rem;
+        padding: 4rem 0 3rem;
       }
 
       .hero-authors,
+      .quick-grid,
       .motivation-grid,
       .pipe-stages,
       .module-grid,
-      .rtca-grid,
-      .quick-grid {
+      .rtca-grid {
         grid-template-columns: 1fr;
+      }
+
+      .pipe-stages .pipe-stage:last-child {
+        grid-column: auto;
       }
 
       .poster-frame {
@@ -727,8 +750,8 @@
       }
 
       .future-banner {
-        flex-direction: column;
         align-items: flex-start;
+        flex-direction: column;
       }
     }
 
@@ -739,7 +762,13 @@
       }
 
       .h-link {
-        justify-content: center;
+        width: 100%;
+      }
+
+      .author-chip img {
+        width: 44px;
+        height: 44px;
+        flex-basis: 44px;
       }
 
       .poster-frame {
@@ -769,7 +798,7 @@
       </p>
 
       <div class="hero-links">
-        <a href="#" class="h-link primary">
+        <a href="https://github.com/ClairVoyan-UW" class="h-link primary" target="_blank" rel="noopener">
           <i class="fab fa-github"></i> Code
         </a>
 
@@ -835,7 +864,7 @@
       <h2 class="sec-title">Small UAVs Need Lightweight Collision Avoidance.</h2>
 
       <p class="sec-prose">
-        ClairVoyan replaces heavy sensing hardware with a vision-based pipeline designed for real-time detect-and-avoid.
+        ClairVoyan replaces heavy sensing hardware with a vision-based pipeline for real-time detect-and-avoid.
       </p>
 
       <div class="quick-grid">
@@ -851,7 +880,7 @@
 
         <div class="quick-card">
           <h4>Goal</h4>
-          <p>Detect intruders early enough to support an avoid or hold decision.</p>
+          <p>Detect intruders early enough to support avoid-or-hold decisions.</p>
         </div>
       </div>
     </div>
@@ -874,7 +903,7 @@
             <li>Radar payloads are often too heavy for small RPAS.</li>
             <li>Cooperative-only sensing misses silent intruders.</li>
             <li>Single-frame detection is fragile at long range.</li>
-            <li>False positives can trigger unreliable threat estimates.</li>
+            <li>False positives can corrupt threat estimates.</li>
           </ul>
         </div>
 
@@ -884,7 +913,7 @@
             <li>Use visual motion cues across multiple frames.</li>
             <li>Refine small targets with a cascaded detector.</li>
             <li>Track detections over time with Kalman filtering.</li>
-            <li>Prepare the output for onboard avoidance logic.</li>
+            <li>Prepare outputs for onboard avoidance logic.</li>
           </ul>
         </div>
       </div>
@@ -1100,8 +1129,8 @@
     </div>
 
     <p>
-      Built using the <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank">Academic Project Page Template</a>.
-      Licensed under <a href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank">CC BY-SA 4.0</a>.
+      Built using the <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank" rel="noopener">Academic Project Page Template</a>.
+      Licensed under <a href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a>.
     </p>
 
     <p style="margin-top:0.4rem;">
