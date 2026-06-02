@@ -23,26 +23,34 @@
 
   <style>
     :root {
-      --black: #000000;
-      --charcoal: #070807;
-      --charcoal-2: #111210;
-      --panel: #0d0f0d;
-      --panel-soft: #151713;
+      color-scheme: dark;
 
-      --line: rgba(255, 255, 255, 0.14);
-      --line-soft: rgba(255, 255, 255, 0.08);
-      --line-strong: rgba(223, 241, 64, 0.58);
+      --background: #000000;
+      --surface-1: #111113;
+      --surface-2: #18191b;
+      --surface-3: #212225;
+      --surface-4: #272a2d;
 
-      --text: #ffffff;
-      --text-soft: #d7d9d2;
-      --text-muted: #9a9f92;
+      --border: #2b2f33;
+      --border-soft: rgba(255, 255, 255, 0.08);
+      --border-strong: rgba(255, 255, 255, 0.18);
 
-      --accent: #DFF140;
-      --accent-soft: rgba(223, 241, 64, 0.13);
-      --accent-dim: #aebd2f;
+      --text: #edeef0;
+      --text-soft: #b0b4ba;
+      --text-muted: #777b84;
+      --text-faint: #696e77;
 
-      --danger: #ff5f45;
+      --accent: #a2a4a9;
+      --accent-soft: rgba(162, 164, 169, 0.12);
+      --accent-strong: #eaecf0;
+
+      --warning: #f5873d;
+      --success: #50d17b;
       --uw-gold: #b7a57a;
+
+      --font-body: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+      --font-heading: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+      --font-code: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
     }
 
     * {
@@ -53,14 +61,14 @@
 
     html {
       scroll-behavior: smooth;
-      background: var(--black);
+      background: var(--background);
     }
 
     body {
       min-height: 100%;
-      background: var(--black);
+      background: var(--background);
       color: var(--text);
-      font-family: Helvetica, Arial, sans-serif;
+      font-family: var(--font-body);
       -webkit-font-smoothing: antialiased;
       text-rendering: geometricPrecision;
     }
@@ -69,23 +77,90 @@
       color: inherit;
     }
 
+    img,
+    video,
+    iframe {
+      max-width: 100%;
+    }
+
     .container-main {
-      width: min(1160px, calc(100% - 3rem));
+      width: min(1120px, calc(100% - 3rem));
       margin: 0 auto;
+    }
+
+    .top-nav {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(0, 0, 0, 0.88);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .top-nav-inner {
+      width: min(1120px, calc(100% - 3rem));
+      height: 72px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .brand-mark {
+      width: 28px;
+      height: 28px;
+      border: 1px solid var(--border-strong);
+      background: var(--surface-2);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent-strong);
+      font-size: 0.85rem;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    .nav-links a {
+      padding: 0.55rem 0.75rem;
+      color: var(--text-muted);
+      font-size: 0.92rem;
+      text-decoration: none;
+      border: 1px solid transparent;
+      transition: color 0.18s ease, background 0.18s ease, border-color 0.18s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--text);
+      background: var(--surface-2);
+      border-color: var(--border);
     }
 
     .hero-section {
       position: relative;
-      min-height: 94vh;
+      min-height: calc(100vh - 72px);
       display: flex;
       align-items: center;
-      justify-content: center;
-      overflow: hidden;
       padding: 5rem 0 4rem;
+      overflow: hidden;
       background:
-        radial-gradient(circle at 72% 22%, rgba(223, 241, 64, 0.11), transparent 26%),
-        radial-gradient(circle at 12% 78%, rgba(255, 255, 255, 0.055), transparent 28%),
-        linear-gradient(180deg, #000000 0%, #070807 55%, #000000 100%);
+        radial-gradient(circle at 78% 20%, rgba(162, 164, 169, 0.13), transparent 24%),
+        radial-gradient(circle at 15% 75%, rgba(255, 255, 255, 0.045), transparent 28%),
+        linear-gradient(180deg, #000000 0%, #111113 68%, #000000 100%);
     }
 
     .hero-section::before {
@@ -93,134 +168,121 @@
       position: absolute;
       inset: 0;
       background-image:
-        linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
-      background-size: 76px 76px;
-      mask-image: radial-gradient(circle at 50% 38%, black 0%, transparent 72%);
+        linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+      background-size: 72px 72px;
+      mask-image: radial-gradient(circle at 50% 35%, black 0%, transparent 74%);
       pointer-events: none;
-    }
-
-    .hero-section::after {
-      content: "";
-      position: absolute;
-      inset: auto 0 0 0;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--accent), transparent);
-      opacity: 0.7;
     }
 
     .hero-inner {
       position: relative;
       z-index: 1;
-      width: min(1160px, calc(100% - 3rem));
+      width: min(1120px, calc(100% - 3rem));
       margin: 0 auto;
-      text-align: center;
     }
 
-    .hero-badge {
+    .hero-label {
       display: inline-flex;
       align-items: center;
-      gap: 0.55rem;
-      margin-bottom: 1.6rem;
-      padding: 0.5rem 1.1rem;
-      border: 1px solid var(--line-strong);
-      background: rgba(223, 241, 64, 0.06);
-      color: var(--accent);
-      font-family: "Courier New", Courier, monospace;
-      font-size: 0.84rem;
-      font-weight: 700;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
+      gap: 0.5rem;
+      margin-bottom: 1.3rem;
+      padding: 0.42rem 0.75rem;
+      border: 1px solid var(--border);
+      background: rgba(17, 17, 19, 0.7);
+      color: var(--text-muted);
+      font-family: var(--font-code);
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
     }
 
     .hero-title {
-      margin: 0 auto 1.2rem;
+      max-width: 980px;
+      margin-bottom: 1.25rem;
       color: var(--text);
-      font-size: clamp(3.1rem, 7.4vw, 6.8rem);
+      font-family: var(--font-heading);
+      font-size: clamp(3.1rem, 7.1vw, 6.7rem);
       font-weight: 900;
-      line-height: 0.92;
+      line-height: 0.94;
       letter-spacing: -0.075em;
       text-transform: uppercase;
     }
 
-    .hero-title .accent {
+    .hero-title .muted {
       color: var(--accent);
     }
 
     .hero-subtitle {
-      max-width: 860px;
-      margin: 0 auto 2.4rem;
+      max-width: 760px;
+      margin-bottom: 2rem;
       color: var(--text-soft);
-      font-size: clamp(1.2rem, 2vw, 1.45rem);
+      font-size: clamp(1.15rem, 2vw, 1.4rem);
       line-height: 1.55;
     }
 
-    .hero-links {
+    .hero-actions {
       display: flex;
-      justify-content: center;
       flex-wrap: wrap;
-      gap: 0.8rem;
-      margin-bottom: 2.9rem;
+      gap: 0.75rem;
+      margin-bottom: 2.6rem;
     }
 
-    .h-link {
+    .button {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 0.6rem;
-      min-width: 132px;
-      padding: 0.9rem 1.25rem;
-      border: 1px solid var(--line);
-      background: rgba(255, 255, 255, 0.035);
+      gap: 0.55rem;
+      min-width: 128px;
+      padding: 0.82rem 1rem;
+      border: 1px solid var(--border);
+      background: var(--surface-2);
       color: var(--text);
-      font-family: "Courier New", Courier, monospace;
-      font-size: 0.88rem;
+      font-family: var(--font-code);
+      font-size: 0.9rem;
       font-weight: 700;
-      letter-spacing: 0.08em;
       text-decoration: none;
-      text-transform: uppercase;
-      transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+      transition: background 0.18s ease, border-color 0.18s ease, transform 0.18s ease;
     }
 
-    .h-link.primary {
-      background: var(--accent);
-      border-color: var(--accent);
+    .button:hover {
+      transform: translateY(-1px);
+      border-color: var(--border-strong);
+      background: var(--surface-3);
+    }
+
+    .button.primary {
+      background: var(--text);
+      border-color: var(--text);
       color: #000000;
     }
 
-    .h-link.primary:hover {
-      background: #ecff55;
-      transform: translateY(-2px);
-    }
-
-    .h-link.ghost:hover {
-      background: var(--accent-soft);
-      border-color: var(--line-strong);
-      transform: translateY(-2px);
+    .button.primary:hover {
+      background: var(--accent-strong);
     }
 
     .hero-authors {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 1px;
+      border: 1px solid var(--border);
+      background: var(--border);
       max-width: 1040px;
-      margin: 0 auto 1.7rem;
-      border: 1px solid var(--line);
-      background: var(--line);
+      margin-bottom: 1.4rem;
     }
 
     .author-chip {
       display: flex;
       align-items: center;
       gap: 1rem;
-      padding: 0.85rem;
-      background: rgba(13, 15, 13, 0.92);
-      text-align: left;
-      transition: background 0.2s ease;
+      min-height: 96px;
+      padding: 0.75rem;
+      background: rgba(17, 17, 19, 0.92);
+      transition: background 0.18s ease;
     }
 
     .author-chip:hover {
-      background: rgba(223, 241, 64, 0.075);
+      background: var(--surface-2);
     }
 
     .author-chip img {
@@ -229,170 +291,166 @@
       flex: 0 0 72px;
       object-fit: cover;
       object-position: center;
-      border: 1px solid rgba(255,255,255,0.22);
-      background: #111210;
-      filter: grayscale(6%) contrast(1.04);
+      border: 1px solid var(--border-strong);
+      background: var(--surface-3);
     }
 
     .author-chip span {
       color: var(--text);
-      font-size: 1.08rem;
-      font-weight: 800;
-      line-height: 1.15;
+      font-size: 1.05rem;
+      font-weight: 750;
+      line-height: 1.2;
     }
 
     .hero-affiliation {
       color: var(--text-muted);
-      font-size: 1.02rem;
+      font-size: 1rem;
       line-height: 1.5;
     }
 
     .hero-affiliation .uw-text {
       color: var(--uw-gold);
-      font-weight: 800;
+      font-weight: 750;
     }
 
     .hero-meta {
-      margin-top: 0.3rem;
-      color: var(--text-muted);
+      margin-top: 0.25rem;
+      color: var(--text-faint);
       font-size: 0.95rem;
       line-height: 1.5;
     }
 
     .sec {
       padding: 4.5rem 0;
-      background: var(--black);
-      border-top: 1px solid var(--line-soft);
+      background: var(--background);
+      border-top: 1px solid var(--border);
     }
 
     .sec.alt {
-      background: var(--charcoal);
+      background: var(--surface-1);
     }
 
     .sec-kicker {
       margin-bottom: 0.75rem;
       color: var(--accent);
-      font-family: "Courier New", Courier, monospace;
-      font-size: 0.86rem;
+      font-family: var(--font-code);
+      font-size: 0.9rem;
       font-weight: 700;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
+      letter-spacing: 0.04em;
     }
 
     .sec-title {
-      max-width: 980px;
-      margin-bottom: 1.1rem;
+      max-width: 920px;
+      margin-bottom: 1rem;
       color: var(--text);
-      font-size: clamp(2rem, 4vw, 3.35rem);
+      font-family: var(--font-heading);
+      font-size: clamp(2rem, 3.7vw, 3.25rem);
       font-weight: 900;
-      line-height: 1.02;
+      line-height: 1.05;
       letter-spacing: -0.055em;
       text-transform: uppercase;
     }
 
     .sec-prose {
-      max-width: 840px;
+      max-width: 800px;
       margin-bottom: 1.8rem;
       color: var(--text-soft);
-      font-size: 1.22rem;
+      font-size: 1.18rem;
       line-height: 1.6;
     }
 
-    .quick-grid,
-    .motivation-grid,
-    .pipe-stages,
-    .module-grid,
-    .rtca-grid {
+    .grid {
       display: grid;
       gap: 1px;
-      margin-top: 1.7rem;
-      border: 1px solid var(--line);
-      background: var(--line);
+      margin-top: 1.6rem;
+      border: 1px solid var(--border);
+      background: var(--border);
     }
 
-    .quick-grid {
-      grid-template-columns: repeat(3, 1fr);
+    .grid-2 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
-    .quick-card,
-    .motive-card,
-    .pipe-stage,
-    .module-card,
-    .rtca-card {
-      background: var(--panel);
+    .grid-3 {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
     }
 
-    .quick-card {
-      min-height: 160px;
-      padding: 1.55rem;
+    .grid-4 {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
     }
 
-    .quick-card h4,
-    .motive-card h4,
-    .rtca-card h5 {
-      margin-bottom: 0.85rem;
-      color: var(--accent);
-      font-family: "Courier New", Courier, monospace;
-      font-size: 0.9rem;
+    .grid-5 {
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+    }
+
+    .card {
+      background: var(--surface-2);
+      padding: 1.45rem;
+      min-height: 150px;
+    }
+
+    .card h4,
+    .card h5 {
+      margin-bottom: 0.8rem;
+      color: var(--text);
+      font-size: 1.02rem;
       font-weight: 800;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
+      line-height: 1.25;
     }
 
-    .quick-card p,
-    .motive-card li,
-    .pipe-stage p,
-    .module-card p,
-    .rtca-card p {
+    .card .tag {
+      display: inline-block;
+      margin-bottom: 0.8rem;
+      color: var(--accent);
+      font-family: var(--font-code);
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+    }
+
+    .card p,
+    .card li {
       color: var(--text-soft);
-      font-size: 1.08rem;
+      font-size: 1.04rem;
       line-height: 1.55;
     }
 
-    .motivation-grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
-
-    .motive-card {
-      padding: 1.65rem;
-    }
-
-    .motive-card.problem h4 {
-      color: var(--danger);
-    }
-
-    .motive-card.solution h4 {
-      color: var(--accent);
-    }
-
-    .motive-card ul {
+    .card ul {
       list-style: none;
     }
 
-    .motive-card li {
+    .card li {
       position: relative;
-      padding-left: 1.2rem;
-      margin-bottom: 0.55rem;
+      padding-left: 1.1rem;
+      margin-bottom: 0.48rem;
     }
 
-    .motive-card li:last-child {
+    .card li:last-child {
       margin-bottom: 0;
     }
 
-    .motive-card li::before {
+    .card li::before {
       content: "—";
       position: absolute;
       left: 0;
-      color: var(--text-muted);
+      color: var(--text-faint);
+    }
+
+    .card.problem .tag {
+      color: var(--warning);
+    }
+
+    .card.solution .tag {
+      color: var(--success);
     }
 
     .demo-wrap,
     .pipeline-wrap,
     .poster-wrap {
-      margin-top: 1.8rem;
-      padding: 1.15rem;
-      border: 1px solid var(--line);
-      background: var(--panel);
+      margin-top: 1.7rem;
+      padding: 1rem;
+      border: 1px solid var(--border);
+      background: var(--surface-2);
     }
 
     .demo-video {
@@ -400,10 +458,10 @@
       width: 100%;
       max-height: 720px;
       background: #000000;
-      border: 1px solid var(--line);
+      border: 1px solid var(--border);
     }
 
-    .demo-caption {
+    .caption {
       margin-top: 0.8rem;
       color: var(--text-muted);
       font-size: 1rem;
@@ -411,20 +469,15 @@
       text-align: center;
     }
 
-    .pipe-stages {
-      grid-template-columns: repeat(5, 1fr);
-      margin-top: 0;
-      margin-bottom: 1.2rem;
-    }
-
     .pipe-stage {
+      background: var(--surface-2);
       min-height: 150px;
-      padding: 1.25rem 1rem;
-      transition: background 0.2s ease;
+      padding: 1.2rem;
+      transition: background 0.18s ease;
     }
 
     .pipe-stage:hover {
-      background: var(--panel-soft);
+      background: var(--surface-3);
     }
 
     .pipe-num {
@@ -434,36 +487,38 @@
       width: 36px;
       height: 32px;
       margin-bottom: 0.85rem;
-      border: 1px solid var(--line-strong);
-      color: var(--accent);
-      font-family: "Courier New", Courier, monospace;
-      font-size: 0.85rem;
+      border: 1px solid var(--border-strong);
+      color: var(--accent-strong);
+      font-family: var(--font-code);
+      font-size: 0.86rem;
       font-weight: 800;
     }
 
     .pipe-stage.active .pipe-num {
       background: var(--accent);
       color: #000000;
+      border-color: var(--accent);
     }
 
     .pipe-stage h4 {
       margin-bottom: 0.5rem;
       color: var(--text);
       font-size: 1.02rem;
-      font-weight: 900;
-      letter-spacing: 0.02em;
-      text-transform: uppercase;
+      font-weight: 850;
+      line-height: 1.25;
     }
 
     .pipe-stage p {
-      color: var(--text-muted);
-      font-size: 0.95rem;
+      color: var(--text-soft);
+      font-size: 0.98rem;
+      line-height: 1.5;
     }
 
     .pipeline-figure {
+      margin-top: 1rem;
       padding: 0.75rem;
-      border: 1px solid var(--line);
-      background: #f4f7ef;
+      border: 1px solid var(--border);
+      background: #edeef0;
     }
 
     .pipeline-figure img {
@@ -474,63 +529,17 @@
 
     .pipeline-figure figcaption {
       margin-top: 0.75rem;
-      color: #32352f;
+      color: #272a2d;
       font-size: 1rem;
       font-style: italic;
       line-height: 1.45;
       text-align: center;
     }
 
-    .module-grid {
-      grid-template-columns: repeat(4, 1fr);
-    }
-
-    .module-card {
-      min-height: 235px;
-      padding: 1.55rem;
-    }
-
-    .mod-tag {
-      display: inline-block;
-      margin-bottom: 1rem;
-      color: var(--accent);
-      font-family: "Courier New", Courier, monospace;
-      font-size: 0.78rem;
-      font-weight: 800;
-      letter-spacing: 0.11em;
-      text-transform: uppercase;
-    }
-
-    .module-card h4 {
-      margin-bottom: 0.85rem;
-      color: var(--text);
-      font-size: 1.24rem;
-      font-weight: 900;
-      line-height: 1.13;
-      letter-spacing: -0.025em;
-      text-transform: uppercase;
-    }
-
-    .rtca-grid {
-      grid-template-columns: repeat(3, 1fr);
-    }
-
-    .rtca-card {
-      min-height: 150px;
-      padding: 1.45rem;
-    }
-
-    .rtca-card h5 {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      line-height: 1.35;
-    }
-
     .poster-frame {
       width: 100%;
       height: 760px;
-      border: none;
+      border: 1px solid var(--border);
       background: #ffffff;
     }
 
@@ -542,73 +551,48 @@
       margin-top: 1rem;
     }
 
-    .poster-button {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.55rem;
-      padding: 0.8rem 1.1rem;
-      border: 1px solid var(--line-strong);
-      background: var(--accent-soft);
-      color: var(--accent);
-      font-family: "Courier New", Courier, monospace;
-      font-size: 0.86rem;
-      font-weight: 800;
-      letter-spacing: 0.08em;
-      text-decoration: none;
-      text-transform: uppercase;
-      transition: background 0.2s ease, transform 0.2s ease;
-    }
-
-    .poster-button:hover {
-      background: rgba(223, 241, 64, 0.18);
-      transform: translateY(-2px);
-    }
-
     .future-banner {
       display: flex;
       align-items: center;
       gap: 1.3rem;
-      margin-top: 1.8rem;
-      padding: 1.8rem;
-      border: 1px solid var(--line);
-      background:
-        linear-gradient(90deg, rgba(223, 241, 64, 0.13), transparent),
-        var(--panel);
+      margin-top: 1.7rem;
+      padding: 1.7rem;
+      border: 1px solid var(--border);
+      background: linear-gradient(90deg, rgba(162, 164, 169, 0.12), transparent), var(--surface-2);
     }
 
     .future-icon {
       display: flex;
-      flex: 0 0 64px;
+      flex: 0 0 60px;
       align-items: center;
       justify-content: center;
-      width: 64px;
-      height: 64px;
-      border: 1px solid var(--line-strong);
-      color: var(--accent);
+      width: 60px;
+      height: 60px;
+      border: 1px solid var(--border-strong);
+      color: var(--text);
       font-size: 1.35rem;
+      background: var(--surface-3);
     }
 
     .future-banner h4 {
-      margin-bottom: 0.45rem;
+      margin-bottom: 0.4rem;
       color: var(--text);
-      font-size: 1.35rem;
-      font-weight: 900;
+      font-size: 1.3rem;
+      font-weight: 850;
       letter-spacing: -0.02em;
-      text-transform: uppercase;
     }
 
     .future-banner p {
       color: var(--text-soft);
-      font-size: 1.12rem;
+      font-size: 1.1rem;
       line-height: 1.55;
     }
 
     .ref-list {
       margin-top: 1.6rem;
-      padding: 1.4rem;
-      border: 1px solid var(--line);
-      background: var(--panel);
+      padding: 1.35rem;
+      border: 1px solid var(--border);
+      background: var(--surface-2);
       list-style: none;
       counter-reset: ref;
     }
@@ -632,14 +616,14 @@
       position: absolute;
       left: 0;
       color: var(--accent);
-      font-family: "Courier New", Courier, monospace;
-      font-size: 0.85rem;
+      font-family: var(--font-code);
+      font-size: 0.9rem;
       font-weight: 800;
     }
 
     .site-footer {
       padding: 2.4rem 1.5rem;
-      border-top: 1px solid var(--line);
+      border-top: 1px solid var(--border);
       background: #000000;
       text-align: center;
     }
@@ -653,10 +637,10 @@
     }
 
     .footer-logos span {
+      color: var(--text-muted);
       font-size: 0.95rem;
       font-weight: 800;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
+      letter-spacing: 0.04em;
     }
 
     .footer-logos .uw {
@@ -664,7 +648,7 @@
     }
 
     .footer-logos .guideair {
-      color: var(--accent);
+      color: var(--accent-strong);
     }
 
     .site-footer p {
@@ -674,7 +658,7 @@
     }
 
     .site-footer a {
-      color: var(--accent);
+      color: var(--accent-strong);
       text-decoration: none;
     }
 
@@ -683,26 +667,27 @@
     }
 
     @media (max-width: 980px) {
-      .hero-authors {
+      .hero-authors,
+      .grid-3,
+      .grid-4,
+      .grid-5 {
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
 
-      .quick-grid,
-      .pipe-stages,
-      .module-grid,
-      .rtca-grid {
-        grid-template-columns: repeat(2, 1fr);
+      .grid-5 .pipe-stage:last-child {
+        grid-column: span 2;
       }
 
-      .pipe-stages .pipe-stage:last-child {
-        grid-column: span 2;
+      .nav-links {
+        display: none;
       }
     }
 
     @media (max-width: 768px) {
       .container-main,
-      .hero-inner {
-        width: min(100% - 2rem, 1160px);
+      .hero-inner,
+      .top-nav-inner {
+        width: min(100% - 2rem, 1120px);
       }
 
       .hero-section {
@@ -710,16 +695,24 @@
         padding: 4rem 0 3rem;
       }
 
+      .hero-actions {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .button {
+        width: 100%;
+      }
+
       .hero-authors,
-      .quick-grid,
-      .motivation-grid,
-      .pipe-stages,
-      .module-grid,
-      .rtca-grid {
+      .grid-2,
+      .grid-3,
+      .grid-4,
+      .grid-5 {
         grid-template-columns: 1fr;
       }
 
-      .pipe-stages .pipe-stage:last-child {
+      .grid-5 .pipe-stage:last-child {
         grid-column: auto;
       }
 
@@ -734,15 +727,6 @@
     }
 
     @media (max-width: 480px) {
-      .hero-links {
-        flex-direction: column;
-        align-items: stretch;
-      }
-
-      .h-link {
-        width: 100%;
-      }
-
       .author-chip img {
         width: 60px;
         height: 60px;
@@ -758,44 +742,59 @@
 
 <body>
 
-  <!-- HERO -->
+  <nav class="top-nav">
+    <div class="top-nav-inner">
+      <a class="brand" href="#">
+        <span class="brand-mark"><i class="fas fa-plane"></i></span>
+        <span>ClairVoyan</span>
+      </a>
+
+      <div class="nav-links">
+        <a href="#demo">Demo</a>
+        <a href="#pipeline">Pipeline</a>
+        <a href="#poster">Poster</a>
+        <a href="#refs">References</a>
+      </div>
+    </div>
+  </nav>
+
   <section class="hero-section">
     <div class="hero-inner">
-      <div class="hero-badge">
+      <div class="hero-label">
         <i class="fas fa-plane"></i>
         UW ECE Capstone 2026
       </div>
 
       <h1 class="hero-title">
-        <span class="accent">ClairVoyan</span><br>
-        Vision-Based DAA
+        ClairVoyan<br>
+        <span class="muted">Vision-Based DAA</span>
       </h1>
 
       <p class="hero-subtitle">
         A lightweight camera-only system for detecting, tracking, and avoiding airborne intruders.
       </p>
 
-      <div class="hero-links">
-        <a href="https://github.com/ClairVoyan-UW" class="h-link primary" target="_blank" rel="noopener">
+      <div class="hero-actions">
+        <a href="https://github.com/ClairVoyan-UW" class="button primary" target="_blank" rel="noopener">
           <i class="fab fa-github"></i> Code
         </a>
 
-        <a href="#poster" class="h-link ghost">
-          <i class="fas fa-file-pdf"></i> Poster
-        </a>
-
-        <a href="#demo" class="h-link ghost">
+        <a href="#demo" class="button">
           <i class="fas fa-video"></i> Demo
         </a>
 
-        <a href="#refs" class="h-link ghost">
+        <a href="#poster" class="button">
+          <i class="fas fa-file-pdf"></i> Poster
+        </a>
+
+        <a href="#refs" class="button">
           <i class="fas fa-book"></i> References
         </a>
       </div>
 
       <div class="hero-authors">
         <div class="author-chip">
-          <img src="assets/images/team/yu-an-chen.jpeg" alt="Yu-An Chen">
+          <img src="assets/images/team/yu-an-chen.JPEG" alt="Yu-An Chen">
           <span>Yu-An Chen</span>
         </div>
 
@@ -835,7 +834,6 @@
     </div>
   </section>
 
-  <!-- DEMO -->
   <section class="sec" id="demo">
     <div class="container-main">
       <div class="sec-kicker">Live Demo</div>
@@ -847,18 +845,17 @@
 
       <div class="demo-wrap">
         <video class="demo-video" controls muted playsinline preload="metadata">
-          <source src="assets/video/metrics_overlay.mp4" type="video/mp4">
+          <source src="assets/video/metrics_overlay_h264.mp4" type="video/mp4">
           Your browser does not support the video tag.
         </video>
 
-        <p class="demo-caption">
-          Demo video: detection overlay with frame-level metrics.
+        <p class="caption">
+          Detection overlay with frame-level metrics.
         </p>
       </div>
     </div>
   </section>
 
-  <!-- SNAPSHOT -->
   <section class="sec alt">
     <div class="container-main">
       <div class="sec-kicker">Project Snapshot</div>
@@ -868,26 +865,28 @@
         ClairVoyan replaces heavy sensing hardware with a vision-based pipeline for real-time detect-and-avoid.
       </p>
 
-      <div class="quick-grid">
-        <div class="quick-card">
-          <h4>Input</h4>
-          <p>X-Plane synthetic encounters with diverse aircraft, lighting, and weather.</p>
+      <div class="grid grid-3">
+        <div class="card">
+          <span class="tag">Input</span>
+          <h4>X-Plane Encounters</h4>
+          <p>Synthetic flight scenarios with aircraft, lighting, and weather variation.</p>
         </div>
 
-        <div class="quick-card">
-          <h4>Core Method</h4>
+        <div class="card">
+          <span class="tag">Method</span>
+          <h4>Vision Pipeline</h4>
           <p>Frame alignment, cascaded detection, and temporal tracking.</p>
         </div>
 
-        <div class="quick-card">
-          <h4>Goal</h4>
-          <p>Detect intruders early enough to support avoid-or-hold decisions.</p>
+        <div class="card">
+          <span class="tag">Output</span>
+          <h4>Threat Cues</h4>
+          <p>Track-level estimates for avoid-or-hold decision logic.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- MOTIVATION -->
   <section class="sec">
     <div class="container-main">
       <div class="sec-kicker">Motivation</div>
@@ -897,9 +896,10 @@
         A camera-only DAA system can reduce size, weight, power, and cost while detecting non-cooperative aircraft.
       </p>
 
-      <div class="motivation-grid">
-        <div class="motive-card problem">
-          <h4><i class="fas fa-triangle-exclamation"></i> Current Gap</h4>
+      <div class="grid grid-2">
+        <div class="card problem">
+          <span class="tag">Current Gap</span>
+          <h4>Payload And Sensing Limits</h4>
           <ul>
             <li>Radar payloads are often too heavy for small RPAS.</li>
             <li>Cooperative-only sensing misses silent intruders.</li>
@@ -908,8 +908,9 @@
           </ul>
         </div>
 
-        <div class="motive-card solution">
-          <h4><i class="fas fa-crosshairs"></i> Our Approach</h4>
+        <div class="card solution">
+          <span class="tag">Our Approach</span>
+          <h4>Camera-Only DAA</h4>
           <ul>
             <li>Use visual motion cues across multiple frames.</li>
             <li>Refine small targets with a cascaded detector.</li>
@@ -921,8 +922,7 @@
     </div>
   </section>
 
-  <!-- SYSTEM PIPELINE -->
-  <section class="sec alt">
+  <section class="sec alt" id="pipeline">
     <div class="container-main">
       <div class="sec-kicker">System Pipeline</div>
       <h2 class="sec-title">From Raw Frames To Track-Level Threat Cues.</h2>
@@ -932,7 +932,7 @@
       </p>
 
       <div class="pipeline-wrap">
-        <div class="pipe-stages">
+        <div class="grid grid-5">
           <div class="pipe-stage">
             <div class="pipe-num">01</div>
             <h4>Frame Input</h4>
@@ -974,7 +974,6 @@
     </div>
   </section>
 
-  <!-- CORE MODULES -->
   <section class="sec">
     <div class="container-main">
       <div class="sec-kicker">Core Modules</div>
@@ -984,27 +983,27 @@
         Each module converts noisy video into a more stable estimate of intruder motion.
       </p>
 
-      <div class="module-grid">
-        <div class="module-card">
-          <span class="mod-tag">Alignment</span>
+      <div class="grid grid-4">
+        <div class="card">
+          <span class="tag">Alignment</span>
           <h4>Ego-Motion Compensation</h4>
           <p>ResNet-34 optical flow stabilizes the scene so intruder motion is easier to isolate.</p>
         </div>
 
-        <div class="module-card">
-          <span class="mod-tag">Detection</span>
+        <div class="card">
+          <span class="tag">Detection</span>
           <h4>Cascaded HRNet</h4>
           <p>HRNet-W32 finds proposals, while HRNet-W48 refines small aircraft crops.</p>
         </div>
 
-        <div class="module-card">
-          <span class="mod-tag">Tracking</span>
+        <div class="card">
+          <span class="tag">Tracking</span>
           <h4>Offset + Kalman</h4>
           <p>Offset association and Kalman filtering maintain smoother track estimates.</p>
         </div>
 
-        <div class="module-card">
-          <span class="mod-tag">Alternative</span>
+        <div class="card">
+          <span class="tag">Alternative</span>
           <h4>YOLO26 Training</h4>
           <p>YOLO26 is being tested as a lighter detector for faster deployment.</p>
         </div>
@@ -1012,7 +1011,6 @@
     </div>
   </section>
 
-  <!-- RTCA DO-387 -->
   <section class="sec alt">
     <div class="container-main">
       <div class="sec-kicker">Requirements</div>
@@ -1022,41 +1020,46 @@
         The system is evaluated against aviation-focused range, field-of-view, tracking, and false-positive constraints.
       </p>
 
-      <div class="rtca-grid">
-        <div class="rtca-card">
-          <h5><i class="fas fa-ruler"></i> Detection Range</h5>
+      <div class="grid grid-3">
+        <div class="card">
+          <span class="tag"><i class="fas fa-ruler"></i> Range</span>
+          <h4>Detection Distance</h4>
           <p>Small: 2,698 m; medium: 3,084 m; large: 3,598 m.</p>
         </div>
 
-        <div class="rtca-card">
-          <h5><i class="fas fa-arrows-left-right"></i> Field of View</h5>
+        <div class="card">
+          <span class="tag"><i class="fas fa-arrows-left-right"></i> Field</span>
+          <h4>Field of View</h4>
           <p>±110° horizontal and ±15° vertical coverage.</p>
         </div>
 
-        <div class="rtca-card">
-          <h5><i class="fas fa-layer-group"></i> Track Capacity</h5>
+        <div class="card">
+          <span class="tag"><i class="fas fa-layer-group"></i> Tracks</span>
+          <h4>Track Capacity</h4>
           <p>Recognize and track at least 10 objects.</p>
         </div>
 
-        <div class="rtca-card">
-          <h5><i class="fas fa-ban"></i> False Positives</h5>
+        <div class="card">
+          <span class="tag"><i class="fas fa-ban"></i> Filtering</span>
+          <h4>False Positives</h4>
           <p>Reject ground and atmospheric objects.</p>
         </div>
 
-        <div class="rtca-card">
-          <h5><i class="fas fa-location-crosshairs"></i> State Estimation</h5>
+        <div class="card">
+          <span class="tag"><i class="fas fa-location-crosshairs"></i> State</span>
+          <h4>State Estimation</h4>
           <p>Estimate distance, angle, and azimuth.</p>
         </div>
 
-        <div class="rtca-card">
-          <h5><i class="fas fa-plane"></i> Classification</h5>
+        <div class="card">
+          <span class="tag"><i class="fas fa-plane"></i> Class</span>
+          <h4>Classification</h4>
           <p>Separate helicopter, drone, and airplane classes.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- POSTER -->
   <section class="sec" id="poster">
     <div class="container-main">
       <div class="sec-kicker">Poster</div>
@@ -1074,11 +1077,11 @@
         </iframe>
 
         <div class="poster-actions">
-          <a href="assets/docs/clairvoyan-poster.pdf" class="poster-button" target="_blank" rel="noopener">
+          <a href="assets/docs/clairvoyan-poster.pdf" class="button" target="_blank" rel="noopener">
             <i class="fas fa-up-right-from-square"></i> Open Poster
           </a>
 
-          <a href="assets/docs/clairvoyan-poster.pdf" class="poster-button" download>
+          <a href="assets/docs/clairvoyan-poster.pdf" class="button" download>
             <i class="fas fa-download"></i> Download
           </a>
         </div>
@@ -1086,7 +1089,6 @@
     </div>
   </section>
 
-  <!-- FUTURE WORK -->
   <section class="sec alt">
     <div class="container-main">
       <div class="sec-kicker">Next Step</div>
@@ -1105,7 +1107,6 @@
     </div>
   </section>
 
-  <!-- REFERENCES -->
   <section class="sec" id="refs">
     <div class="container-main">
       <div class="sec-kicker">References</div>
@@ -1121,11 +1122,10 @@
     </div>
   </section>
 
-  <!-- FOOTER -->
   <footer class="site-footer">
     <div class="footer-logos">
       <span class="uw"><i class="fas fa-university"></i>&ensp;UW ECE</span>
-      <span style="color:var(--text-muted);">×</span>
+      <span>×</span>
       <span class="guideair"><i class="fas fa-plane-departure"></i>&ensp;GuideAir Labs</span>
     </div>
 
